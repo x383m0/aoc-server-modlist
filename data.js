@@ -2,7 +2,7 @@
 //  EASY CONFIG — edit everything here
 // ============================================================
 
-const SERVER_IP = "play.yourserver.net";       // ← change your server IP here
+const SERVER_IP = "PlaceHolder.net";       // ← change your server IP here
 const SERVER_PORT = "25565";
 const MC_VERSION = "1.21.1";
 const MODLOADER = "NeoForge 21.1.232";
@@ -31,7 +31,7 @@ const MODPACK_DOWNLOAD_LABEL = "Download on CurseForge";
 // "Armor, Tools & Weapons" | "Mobs"
 
 const MODS_DATA = [
-  { name:"3d-Skin-Layers", modId:"skinlayers3d", version:"1.11.1", category:"Cosmetic", description:"Renders the outer layer of player skins in 3D, giving characters a more detailed and voluminous look.", modrinthUrl:"https://modrinth.com/mod/skinlayers3d", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/3dskinlayers" },
+  { name:"3d Skin Layers", modId:"skinlayers3d", version:"1.11.1", category:"Cosmetic", description:"Renders the outer layer of player skins in 3D, giving characters a more detailed and voluminous look.", modrinthUrl:"https://modrinth.com/mod/skinlayers3d", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/3dskinlayers" },
   { name:"Aeronautics Claims", modId:"aeroclaims", version:"0.9.0", category:"Server Utility", description:"Chunk claiming system integrated with Create Aeronautics, letting players protect their land and airships.", modrinthUrl:"https://modrinth.com/mod/aeroclaims", cfUrl:"" },
   { name:"All of Create Core", modId:"aoc", version:"2", category:"API & Library", description:"Core library mod required by the All of Create modpack. Provides shared utilities and data for other pack mods.", modrinthUrl:"https://modrinth.com/mod/aoc", cfUrl:"" },
   { name:"All The Leaks", modId:"alltheleaks", version:"1.1.9+1.21.1-neoforge", category:"Performance", description:"Fixes various memory leaks in Minecraft and modded environments to keep long play sessions stable.", modrinthUrl:"https://modrinth.com/mod/alltheleaks", cfUrl:"" },
