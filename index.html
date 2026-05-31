@@ -604,18 +604,18 @@
   </div>
 
   <div class="main">
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
-      <div class="info-card" style="cursor:pointer;border-color:rgba(232,160,48,0.2)" onclick="showPage('mods')">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;align-items:stretch;max-width:960px;margin:0 auto;">
+      <div class="info-card" style="cursor:pointer;border-color:rgba(232,160,48,0.2);width:280px;flex-shrink:0" onclick="showPage('mods')">
         <div class="info-card-title">📦 Mod List</div>
         <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6">Browse all mods with category filters, descriptions, and links to CurseForge and Modrinth.</p>
         <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--accent);letter-spacing:0.1em">VIEW MODS →</div>
       </div>
-      <div class="info-card" style="cursor:pointer;border-color:rgba(77,184,255,0.2)" onclick="showPage('info')">
+      <div class="info-card" style="cursor:pointer;border-color:rgba(77,184,255,0.2);width:280px;flex-shrink:0" onclick="showPage('info')">
         <div class="info-card-title" style="color:var(--accent2)">🖥 Server Info</div>
         <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6">Connection details, pack version, modloader info, and quick-copy server IP.</p>
         <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--accent2);letter-spacing:0.1em">VIEW INFO →</div>
       </div>
-      <div class="info-card" style="border-color:rgba(127,255,111,0.2)">
+      <div class="info-card" style="border-color:rgba(127,255,111,0.2);width:280px;flex-shrink:0">
         <div class="info-card-title" style="color:var(--accent3)">⬇ Download Pack</div>
         <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6">Get the modpack via CurseForge or Modrinth. Requires at least 6GB RAM allocated.</p>
         <div style="margin-top:14px">
