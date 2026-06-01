@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All of Create: Aeronautics — Server Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d0f;
+    --surface: #111418;
+    --surface2: #181c22;
+    --border: #1e2530;
+    --accent: #e8a030;
+    --accent2: #4db8ff;
+    --accent3: #7fff6f;
+    --text: #d4d8e0;
+    --text-muted: #5a6070;
+    --text-bright: #f0f3f8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,160,48,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,160,48,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    background: rgba(11,13,15,0.97);
+    backdrop-filter: blur(12px);
+    padding: 0 2rem;
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .logo-gear {
+    width: 36px; height: 36px;
+    color: var(--accent);
+    animation: spin-slow 8s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+  .logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; color: var(--text-bright); line-height: 1; }
+  .logo-sub { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; }
+
+  nav { display: flex; gap: 4px; }
+
+  nav a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  nav a:hover, nav a.active { color: var(--accent); background: rgba(232,160,48,0.08); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 80px 2rem 60px;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(232,160,48,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(232,160,48,0.3);
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    letter-spacing: 0.04em;
+    color: var(--text-bright);
+    line-height: 0.9;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--accent); line-height: 1; }
+  .stat-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MAIN */
+  .main {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem 80px;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.06em; color: var(--text-bright); }
+  .section-count { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.1em; }
+
+  /* SEARCH */
+  .search-bar { position: relative; margin-bottom: 20px; }
+
+  .search-bar input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 20px 14px 48px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .search-bar input::placeholder { color: var(--text-muted); }
+  .search-bar input:focus { border-color: rgba(232,160,48,0.4); }
+
+  .search-icon {
+    position: absolute;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    width: 18px; height: 18px;
+  }
+
+  /* FILTER TABS */
+  .filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .filter-tab {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .filter-tab:hover { color: var(--text); border-color: rgba(232,160,48,0.3); }
+
+  .filter-tab.active {
+    color: var(--accent);
+    background: rgba(232,160,48,0.1);
+    border-color: rgba(232,160,48,0.4);
+  }
+
+  .filter-tab .tab-count {
+    margin-left: 6px;
+    color: var(--text-muted);
+    font-size: 0.58rem;
+  }
+
+  .filter-tab.active .tab-count { color: rgba(232,160,48,0.6); }
+
+  /* MODS GRID */
+  .mods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+  }
+
+  .mod-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .mod-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.2s;
+    transform-origin: bottom;
+  }
+
+  .mod-card:hover {
+    border-color: rgba(232,160,48,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  .mod-card:hover::before { transform: scaleY(1); }
+
+  .mod-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+
+  .mod-name { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; color: var(--text-bright); }
+
+  .mod-category-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .mod-id { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--text-muted); letter-spacing: 0.08em; margin-bottom: 8px; }
+
+  .mod-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .mod-footer { display: flex; align-items: center; justify-content: space-between; }
+
+  .mod-version {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--accent3);
+    background: rgba(127,255,111,0.08);
+    border: 1px solid rgba(127,255,111,0.15);
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+  }
+
+  .mod-links { display: flex; gap: 6px; }
+
+  .mod-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mod-link.cf { color: var(--accent); background: rgba(232,160,48,0.08); border: 1px solid rgba(232,160,48,0.2); }
+  .mod-link.mr { color: var(--accent2); background: rgba(77,184,255,0.08); border: 1px solid rgba(77,184,255,0.2); }
+  .mod-link:hover { opacity: 0.8; transform: scale(0.97); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    max-width: 560px;
+    width: 100%;
+    overflow: hidden;
+    animation: modalIn 0.2s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    padding: 20px 24px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .modal-title { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1.1rem; color: var(--text-bright); }
+  .modal-id { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--text-muted); margin-top: 3px; }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.4rem;
+    line-height: 1;
+    padding: 0 2px;
+    transition: color 0.15s;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover { color: var(--text-bright); }
+
+  .modal-body { padding: 20px 24px 24px; }
+
+  .modal-badges { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+
+  .modal-desc {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  .modal-links { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .modal-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 3px;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .modal-link.cf { color: var(--accent); background: rgba(232,160,48,0.1); border: 1px solid rgba(232,160,48,0.25); }
+  .modal-link.mr { color: var(--accent2); background: rgba(77,184,255,0.1); border: 1px solid rgba(77,184,255,0.25); }
+  .modal-link:hover { opacity: 0.8; }
+
+  /* CATEGORY COLORS */
+  .cat-utility   { background: rgba(232,160,48,0.12); color: #e8a030; border: 1px solid rgba(232,160,48,0.25); }
+  .cat-cosmetic  { background: rgba(255,120,200,0.12); color: #ff78c8; border: 1px solid rgba(255,120,200,0.25); }
+  .cat-api       { background: rgba(77,184,255,0.12); color: #4db8ff; border: 1px solid rgba(77,184,255,0.25); }
+  .cat-perf      { background: rgba(127,255,111,0.12); color: #7fff6f; border: 1px solid rgba(127,255,111,0.25); }
+  .cat-misc      { background: rgba(180,160,255,0.12); color: #b4a0ff; border: 1px solid rgba(180,160,255,0.25); }
+  .cat-map       { background: rgba(255,210,80,0.12); color: #ffd250; border: 1px solid rgba(255,210,80,0.25); }
+  .cat-server    { background: rgba(255,100,100,0.12); color: #ff6464; border: 1px solid rgba(255,100,100,0.25); }
+  .cat-adventure { background: rgba(255,150,80,0.12); color: #ff9650; border: 1px solid rgba(255,150,80,0.25); }
+  .cat-bugfix    { background: rgba(80,200,150,0.12); color: #50c896; border: 1px solid rgba(80,200,150,0.25); }
+  .cat-addon     { background: rgba(232,160,48,0.12); color: #e8a030; border: 1px solid rgba(232,160,48,0.25); }
+  .cat-worldgen  { background: rgba(100,220,120,0.12); color: #64dc78; border: 1px solid rgba(100,220,120,0.25); }
+  .cat-armor     { background: rgba(200,150,100,0.12); color: #c89664; border: 1px solid rgba(200,150,100,0.25); }
+  .cat-mobs      { background: rgba(220,100,100,0.12); color: #dc6464; border: 1px solid rgba(220,100,100,0.25); }
+
+  /* INFO CARDS */
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+  }
+
+  .info-card-title { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 16px; text-transform: uppercase; }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+  }
+
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--text-muted); font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.05em; }
+  .info-value { color: var(--text-bright); font-weight: 500; }
+
+  .copy-btn {
+    background: rgba(232,160,48,0.1);
+    border: 1px solid rgba(232,160,48,0.25);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: all 0.15s;
+  }
+
+  .copy-btn:hover { background: rgba(232,160,48,0.2); }
+
+  .ip-display { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--text-bright); letter-spacing: 0.06em; margin: 12px 0; }
+
+  /* DOWNLOAD BUTTON */
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--bg);
+    background: var(--accent);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 700;
+  }
+
+  .download-btn:hover { background: #ffb840; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,160,48,0.3); }
+
+  .download-section {
+    margin-top: 32px;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid rgba(232,160,48,0.2);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .download-section-text h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+
+  .download-section-text p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* DOWNLOAD PAGE */
+  .install-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 720px) {
+    .install-grid { grid-template-columns: 1fr; }
+  }
+
+  .install-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .install-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; height: 3px;
+  }
+
+  .install-card.card-cf::before  { background: linear-gradient(90deg, var(--accent), transparent); }
+  .install-card.card-manual::before { background: linear-gradient(90deg, var(--accent2), transparent); }
+
+  .install-card-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+
+  .install-card-badge.badge-cf     { color: var(--accent);  background: rgba(232,160,48,0.1);  border: 1px solid rgba(232,160,48,0.25); }
+  .install-card-badge.badge-manual { color: var(--accent2); background: rgba(77,184,255,0.1);  border: 1px solid rgba(77,184,255,0.25); }
+
+  .install-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+    color: var(--text-bright);
+    margin-bottom: 10px;
+  }
+
+  .install-card-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  /* CurseForge code block */
+  .cf-code-block {
+    background: var(--surface2);
+    border: 1px solid rgba(232,160,48,0.2);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .cf-code-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .cf-code-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+
+  /* Tutorial steps */
+  .install-steps {
+    list-style: none;
+    counter-reset: step-counter;
+  }
+
+  .install-steps li {
+    counter-increment: step-counter;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .install-steps li:last-child { border-bottom: none; }
+
+  .install-steps li::before {
+    content: counter(step-counter);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 700;
+    min-width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .install-card.card-cf .install-steps li::before    { background: rgba(232,160,48,0.12); color: var(--accent);  border: 1px solid rgba(232,160,48,0.25); }
+  .install-card.card-manual .install-steps li::before { background: rgba(77,184,255,0.12); color: var(--accent2); border: 1px solid rgba(77,184,255,0.25); }
+
+  .install-steps li strong { color: var(--text); font-weight: 500; }
+
+  .install-steps-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  /* NeoForge section */
+  .neoforge-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .neoforge-section-text h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+  }
+
+  .neoforge-section-text p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 480px;
+  }
+
+  .download-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--accent2);
+    background: rgba(77,184,255,0.1);
+    border: 1px solid rgba(77,184,255,0.3);
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .download-btn-secondary:hover { background: rgba(77,184,255,0.18); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(77,184,255,0.2); }
+
+  @media (max-width: 600px) {
+    .neoforge-section { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo" onclick="showPage('home')">
+      <svg class="logo-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/>
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+      </svg>
+      <div>
+        <div class="logo-text">All of Create</div>
+        <div class="logo-sub">Aeronautics · Server Hub</div>
+      </div>
+    </div>
+    <nav>
+      <a onclick="showPage('home')" id="nav-home" class="active">Home</a>
+      <a onclick="showPage('mods')" id="nav-mods">Mods</a>
+      <a onclick="showPage('info')" id="nav-info">Server Info</a>
+      <a onclick="showPage('download')" id="nav-download">Download</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-badge" id="hero-badge">Minecraft 1.21.1 · NeoForge · V1.0</div>
+    <h1>All of Create<br><span>Aeronautics</span></h1>
+    <p class="hero-desc">A Create-focused modpack centered around airships, trains, and mechanical automation. Build flying machines, automate everything, and explore the skies.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num" id="stat-mods">—</div>
+        <div class="stat-label">Mods</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-addons">—</div>
+        <div class="stat-label">Addons</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-cats">13</div>
+        <div class="stat-label">Categories</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;align-items:stretch;max-width:960px;margin:0 auto;">
+      <div class="info-card" style="cursor:pointer;border-color:rgba(232,160,48,0.2);width:280px;flex-shrink:0" onclick="showPage('mods')">
+        <div class="info-card-title">📦 Mod List</div>
+        <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6">Browse all mods with category filters, descriptions, and links to CurseForge and Modrinth.</p>
+        <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--accent);letter-spacing:0.1em">VIEW MODS →</div>
+      </div>
+      <div class="info-card" style="cursor:pointer;border-color:rgba(77,184,255,0.2);width:280px;flex-shrink:0" onclick="showPage('info')">
+        <div class="info-card-title" style="color:var(--accent2)">🖥 Server Info</div>
+        <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6">Connection details, pack version, modloader info, and quick-copy server IP.</p>
+        <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--accent2);letter-spacing:0.1em">VIEW INFO →</div>
+      </div>
+      <div class="info-card" style="border-color:rgba(127,255,111,0.2);width:280px;flex-shrink:0">
+        <div class="info-card-title" style="color:var(--accent3)">⬇ Download Pack</div>
+        <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6">Get the modpack via CurseForge or Modrinth. Requires at least 6GB RAM allocated.</p>
+        <div style="margin-top:14px">
+          <a id="home-download-btn" href="#" onclick="event.preventDefault();showPage('download')" style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--accent3);letter-spacing:0.1em;text-decoration:none">DOWNLOAD →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODS -->
+<div id="page-mods" class="page">
+  <div class="main" style="padding-top:40px">
+    <div class="section-header">
+      <div class="section-title">Mod List</div>
+      <div class="section-count" id="mods-count"></div>
+    </div>
+    <div class="search-bar">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="mod-search" placeholder="Search mods by name or id…" oninput="filterMods()">
+    </div>
+    <div class="filter-tabs" id="filter-tabs"></div>
+    <div class="mods-grid" id="mods-grid"></div>
+    <div class="no-results hidden" id="mods-no-results">No mods found matching your search.</div>
+
+    <div class="download-section">
+      <div class="download-section-text">
+        <h3>Download the Modpack</h3>
+        <p>Install via CurseForge App or Modrinth App. Allocate at least <strong style="color:var(--text)" id="dl-ram"></strong> of RAM before launching.</p>
+      </div>
+      <button id="download-btn" class="download-btn" onclick="showPage('download')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Modpack
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SERVER INFO -->
+<div id="page-info" class="page">
+  <div class="main" style="padding-top:40px">
+    <div class="section-header">
+      <div class="section-title">Server Info</div>
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-title">🔌 Connect</div>
+        <div class="ip-display" id="ip-display"></div>
+        <button class="copy-btn" onclick="copyIP()">COPY IP</button>
+        <div style="margin-top:16px">
+          <div class="info-row"><span class="info-label">Port</span><span class="info-value" id="info-port"></span></div>
+          <div class="info-row"><span class="info-label">Version</span><span class="info-value" id="info-mcver"></span></div>
+          <div class="info-row"><span class="info-label">Modloader</span><span class="info-value" id="info-loader"></span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">📦 Pack Info</div>
+        <div class="info-row"><span class="info-label">Pack Name</span><span class="info-value" id="info-packname"></span></div>
+        <div class="info-row"><span class="info-label">Pack Version</span><span class="info-value" id="info-packver"></span></div>
+        <div class="info-row"><span class="info-label">MC Version</span><span class="info-value" id="info-mcver2"></span></div>
+        <div class="info-row"><span class="info-label">Total Mods</span><span class="info-value" id="info-modcount"></span></div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">🚀 Getting Started</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.9">
+          <p>1. Install the pack via <strong style="color:var(--text)">CurseForge</strong> or <strong style="color:var(--text)">Modrinth</strong></p>
+          <p>2. Allocate at least <strong style="color:var(--text)" id="gs-ram"></strong> of RAM</p>
+          <p>3. Connect to the server IP above</p>
+          <p>4. Open your recipe viewer (press <strong style="color:var(--accent)">R/U</strong> on an item via JEI)</p>
+          <p>5. Check the Mod List tab for all included mods</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">⚙️ Key Mods</div>
+        <div class="info-row"><span class="info-label">Core</span><span class="info-value">Create</span></div>
+        <div class="info-row"><span class="info-label">Airships</span><span class="info-value">Create Aeronautics</span></div>
+        <div class="info-row"><span class="info-label">Trains</span><span class="info-value">Create Railways Navigator</span></div>
+        <div class="info-row"><span class="info-label">Food</span><span class="info-value">Farmer's Delight</span></div>
+        <div class="info-row"><span class="info-label">Energy</span><span class="info-value">Create: New Age</span></div>
+        <div class="info-row"><span class="info-label">Claims</span><span class="info-value">Aeronautics Claims</span></div>
+      </div>
+    </div>
+
+    <div class="download-section" style="margin-top:32px">
+      <div class="download-section-text">
+        <h3>Download the Modpack</h3>
+        <p>Install via CurseForge App or Modrinth App. Allocate at least <strong style="color:var(--text)" id="dl-ram2"></strong> of RAM before launching.</p>
+      </div>
+      <button id="download-btn2" class="download-btn" onclick="showPage('download')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Modpack
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DOWNLOAD MODPACK -->
+<div id="page-download" class="page">
+  <div class="main" style="padding-top:40px">
+
+    <div class="section-header">
+      <div class="section-title">Download Modpack</div>
+      <div class="section-count">2 installation methods</div>
+    </div>
+
+    <!-- ── Installation method cards ──────────────────────────────────── -->
+    <div class="install-grid">
+
+      <!-- ── METHOD 1: Official (CurseForge) ──────────────────────────── -->
+      <article class="install-card card-cf">
+        <div class="install-card-badge badge-cf">Method 1</div>
+        <h2 class="install-card-title">Official Minecraft Installation</h2>
+        <p class="install-card-desc">
+          The easiest way to install the modpack. Use the CurseForge App to automatically
+          download and manage all mods — no manual file handling required.
+        </p>
+
+        <!-- EASY TO EDIT: CurseForge Code -->
+        <div class="cf-code-block">
+          <div>
+            <div class="cf-code-label">CurseForge Modpack Code</div>
+            <div class="cf-code-value" id="cf-code">XXXXXXXX</div>
+          </div>
+          <button
+            class="copy-btn"
+            onclick="navigator.clipboard.writeText(document.getElementById('cf-code').textContent).then(() => { this.textContent='COPIED!'; setTimeout(() => this.textContent='COPY CODE', 1500); })"
+          >COPY CODE</button>
+        </div>
+        <!-- END EASY TO EDIT -->
+
+        <p class="install-steps-title">Step-by-step tutorial</p>
+        <ol class="install-steps">
+          <li>Download and install the <strong>CurseForge App</strong> from curseforge.com.</li>
+          <li>Open <strong>CurseForge</strong> and sign in or continue as a guest.</li>
+          <li>Click <strong>Import</strong> or create a new profile for Minecraft.</li>
+          <li>Paste the modpack code shown above when prompted.</li>
+          <li>Click <strong>Install</strong> and wait for all mods to download.</li>
+          <li>Launch <strong>Minecraft</strong> through CurseForge and enjoy!</li>
+        </ol>
+      </article>
+
+      <!-- ── METHOD 2: Manual Installation ───────────────────────────── -->
+      <article class="install-card card-manual">
+        <div class="install-card-badge badge-manual">Method 2</div>
+        <h2 class="install-card-title">Manual Installation</h2>
+        <p class="install-card-desc">
+          Install the modpack manually by dropping the mod files directly into your
+          <code style="font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--accent2)">.minecraft/mods</code>
+          folder. Requires NeoForge to be installed separately.
+        </p>
+
+        <!-- Download ZIP button — ID is used by JavaScript -->
+        <div style="margin-bottom:24px">
+          <button
+            id="downloadModpackBtn"
+            class="download-btn"
+            style="width:100%;justify-content:center"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Modpack ZIP
+          </button>
+        </div>
+
+        <p class="install-steps-title">Step-by-step tutorial</p>
+        <ol class="install-steps">
+          <li>Click the <strong>Download Modpack ZIP</strong> button above.</li>
+          <li>Extract the downloaded <strong>ZIP archive</strong> to a temporary folder.</li>
+          <li>Press <strong>Win + R</strong> to open the Run dialog.</li>
+          <li>Type <strong>%appdata%</strong> and press Enter.</li>
+          <li>Navigate to <strong>Roaming › .minecraft</strong>.</li>
+          <li>Open (or create) the <strong>mods</strong> folder inside <code style="font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--accent2)">.minecraft</code>.</li>
+          <li>Copy <strong>all mod files</strong> from the extracted ZIP into the mods folder.</li>
+          <li>Download <strong>NeoForge</strong> using the button in the section below.</li>
+          <li>Run the NeoForge installer and select <strong>Install client</strong>.</li>
+          <li>Open the Minecraft Launcher, select the <strong>NeoForge profile</strong>, and launch!</li>
+        </ol>
+      </article>
+
+    </div><!-- /.install-grid -->
+
+    <!-- ── NeoForge Download ─────────────────────────────────────────── -->
+    <section class="neoforge-section" aria-label="NeoForge Download">
+      <div class="neoforge-section-text">
+        <h3>⚙️ NeoForge Installer</h3>
+        <!-- EASY TO EDIT: NeoForge description -->
+        <p>
+          NeoForge is the modloader required to run this modpack.
+          Download the correct version for <strong style="color:var(--text)" id="dl-neoforge-ver">Minecraft 1.21.1</strong>,
+          run the installer, and select <strong style="color:var(--text)">Install client</strong>.
+        </p>
+        <!-- END EASY TO EDIT -->
+      </div>
+      <!-- NeoForge button — ID is used by JavaScript -->
+      <button id="downloadNeoForgeBtn" class="download-btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download NeoForge
+      </button>
+    </section>
+
+  </div><!-- /.main -->
+</div><!-- /#page-download -->
+
+<!-- MOD DETAIL MODAL -->
+<div class="modal-overlay" id="mod-modal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-name"></div>
+        <div class="modal-id" id="modal-id"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-badges">
+        <span class="mod-category-badge" id="modal-cat-badge"></span>
+        <span class="mod-version" id="modal-version"></span>
+      </div>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-links" id="modal-links"></div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+// ── Category metadata ─────────────────────────────────────────────────────────
+const CAT_META = {
+  "Utility & QoL":      { cls: "cat-utility",   icon: "⚙️" },
+  "Cosmetic":           { cls: "cat-cosmetic",   icon: "🎨" },
+  "API & Library":      { cls: "cat-api",        icon: "📚" },
+  "Performance":        { cls: "cat-perf",       icon: "⚡" },
+  "Miscellaneous":      { cls: "cat-misc",       icon: "🔮" },
+  "Map & Information":  { cls: "cat-map",        icon: "🗺️" },
+  "Server Utility":     { cls: "cat-server",     icon: "🖥️" },
+  "Adventure & RPG":    { cls: "cat-adventure",  icon: "⚔️" },
+  "Bug Fixes":          { cls: "cat-bugfix",     icon: "🐛" },
+  "Addons":             { cls: "cat-addon",      icon: "🔩" },
+  "World Gen":          { cls: "cat-worldgen",   icon: "🌍" },
+  "Armor, Tools & Weapons": { cls: "cat-armor",  icon: "🛡️" },
+  "Mobs":               { cls: "cat-mobs",       icon: "🐾" },
+};
+
+const CAT_ORDER = Object.keys(CAT_META);
+
+function getCatCls(cat) { return (CAT_META[cat] || { cls: "cat-misc" }).cls; }
+function getCatIcon(cat) { return (CAT_META[cat] || { icon: "🔮" }).icon; }
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── Config → DOM ──────────────────────────────────────────────────────────────
+function applyConfig() {
+  // hero badge
+  document.getElementById('hero-badge').textContent = `Minecraft ${MC_VERSION} · ${MODLOADER.split(' ')[0]} · ${PACK_VERSION.split(' ')[0]}`;
+
+  // download links — only home-download-btn is still an <a>; the others are now
+  // buttons that call showPage('download') directly via onclick.
+  ['home-download-btn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = '#'; // href kept as # — onclick handles navigation
+  });
+  ['dl-ram','dl-ram2','gs-ram'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = PACK_RAM;
+  });
+
+  // download page — NeoForge version label
+  const nfVer = document.getElementById('dl-neoforge-ver');
+  if (nfVer) nfVer.textContent = `Minecraft ${MC_VERSION}`;
+
+  // server info page
+  document.getElementById('ip-display').textContent   = SERVER_IP;
+  document.getElementById('info-port').textContent    = SERVER_PORT;
+  document.getElementById('info-mcver').textContent   = `Minecraft ${MC_VERSION}`;
+  document.getElementById('info-loader').textContent  = MODLOADER;
+  document.getElementById('info-packname').textContent= PACK_NAME;
+  document.getElementById('info-packver').textContent = PACK_VERSION;
+  document.getElementById('info-mcver2').textContent  = MC_VERSION;
+  document.getElementById('info-modcount').textContent= MODS_DATA.length;
+
+  // stats
+  document.getElementById('stat-mods').textContent   = MODS_DATA.length;
+  const addons = MODS_DATA.filter(m => m.category === 'Addons').length;
+  document.getElementById('stat-addons').textContent  = addons;
+  const cats = new Set(MODS_DATA.map(m => m.category)).size;
+  document.getElementById('stat-cats').textContent    = cats;
+}
+
+// ── Filter tabs ───────────────────────────────────────────────────────────────
+let activeFilter = 'All';
+
+function buildFilterTabs() {
+  const counts = { All: MODS_DATA.length };
+  MODS_DATA.forEach(m => {
+    counts[m.category] = (counts[m.category] || 0) + 1;
+  });
+
+  const cats = ['All', ...CAT_ORDER.filter(c => counts[c])];
+  // add any unknown categories
+  Object.keys(counts).forEach(c => { if (c !== 'All' && !cats.includes(c)) cats.push(c); });
+
+  const container = document.getElementById('filter-tabs');
+  container.innerHTML = cats.map(cat => `
+    <div class="filter-tab ${cat === activeFilter ? 'active' : ''}" onclick="setFilter('${escAttr(cat)}')">
+      ${cat === 'All' ? '' : getCatIcon(cat) + ' '}${escHtml(cat)}<span class="tab-count">${counts[cat]}</span>
+    </div>
+  `).join('');
+}
+
+function setFilter(cat) {
+  activeFilter = cat;
+  buildFilterTabs();
+  filterMods();
+}
+
+// ── Mods render ───────────────────────────────────────────────────────────────
+function renderMods(mods) {
+  const grid  = document.getElementById('mods-grid');
+  const noRes = document.getElementById('mods-no-results');
+  document.getElementById('mods-count').textContent = mods.length + ' mod' + (mods.length !== 1 ? 's' : '');
+
+  if (mods.length === 0) { grid.innerHTML = ''; noRes.classList.remove('hidden'); return; }
+  noRes.classList.add('hidden');
+
+  grid.innerHTML = mods.map((mod, i) => {
+    const catCls  = getCatCls(mod.category);
+    const catIcon = getCatIcon(mod.category);
+    return `<div class="mod-card" onclick="openModal(${i})">
+      <div class="mod-card-header">
+        <div class="mod-name">${escHtml(mod.name)}</div>
+        <span class="mod-category-badge ${catCls}">${catIcon} ${escHtml(mod.category)}</span>
+      </div>
+      <div class="mod-id">${escHtml(mod.modId)}</div>
+      <div class="mod-desc">${escHtml(mod.description || '')}</div>
+      <div class="mod-footer">
+        <span class="mod-version">v${escHtml(mod.version)}</span>
+        <div class="mod-links" onclick="event.stopPropagation()">
+          ${mod.cfUrl  ? `<a class="mod-link cf" href="${escAttr(mod.cfUrl)}"  target="_blank" rel="noopener">CF</a>` : ''}
+          ${mod.modrinthUrl ? `<a class="mod-link mr" href="${escAttr(mod.modrinthUrl)}" target="_blank" rel="noopener">MR</a>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Store filtered list for modal indexing
+let currentMods = [];
+
+function filterMods() {
+  const q = document.getElementById('mod-search').value.toLowerCase().trim();
+  let mods = MODS_DATA;
+  if (activeFilter !== 'All') mods = mods.filter(m => m.category === activeFilter);
+  if (q) mods = mods.filter(m =>
+    m.name.toLowerCase().includes(q) ||
+    m.modId.toLowerCase().includes(q) ||
+    (m.description || '').toLowerCase().includes(q)
+  );
+  currentMods = mods;
+  renderMods(mods);
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+function openModal(idx) {
+  const mod = currentMods[idx];
+  if (!mod) return;
+  const catCls  = getCatCls(mod.category);
+  const catIcon = getCatIcon(mod.category);
+
+  document.getElementById('modal-name').textContent    = mod.name;
+  document.getElementById('modal-id').textContent      = mod.modId;
+  document.getElementById('modal-version').textContent = 'v' + mod.version;
+
+  const badge = document.getElementById('modal-cat-badge');
+  badge.textContent  = catIcon + ' ' + mod.category;
+  badge.className    = 'mod-category-badge ' + catCls;
+
+  document.getElementById('modal-desc').textContent = mod.description || 'No description available.';
+
+  const links = document.getElementById('modal-links');
+  links.innerHTML = [
+    mod.modrinthUrl ? `<a class="modal-link mr" href="${escAttr(mod.modrinthUrl)}" target="_blank" rel="noopener">🌿 Modrinth</a>` : '',
+    mod.cfUrl       ? `<a class="modal-link cf" href="${escAttr(mod.cfUrl)}"        target="_blank" rel="noopener">🔥 CurseForge</a>` : '',
+  ].join('');
+
+  document.getElementById('mod-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('mod-modal')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('mod-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// ── Copy IP ───────────────────────────────────────────────────────────────────
+function copyIP() {
+  navigator.clipboard.writeText(SERVER_IP).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'COPIED!';
+    setTimeout(() => btn.textContent = 'COPY IP', 1500);
+  });
+}
+
+// ── Utils ─────────────────────────────────────────────────────────────────────
+function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escAttr(s) { return String(s||'').replace(/"/g,'&quot;'); }
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+applyConfig();
+buildFilterTabs();
+currentMods = MODS_DATA;
+renderMods(MODS_DATA);
+</script>
+</body>
+</html>
