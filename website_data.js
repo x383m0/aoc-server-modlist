@@ -27,7 +27,7 @@ const MODPACK_ZIP_URL = "REPLACE_ME";
 
 // EASY TO EDIT: NeoForge installer download URL.
 // Always grab the correct version from https://neoforged.net/
-const NEOFORGE_URL = "REPLACE_ME";
+const NEOFORGE_URL = "https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.232/neoforge-21.1.232-installer.jar";
 
 // ============================================================
 //  MOD LIST — add or remove mods here
