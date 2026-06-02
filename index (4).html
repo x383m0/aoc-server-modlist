@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All of Create: Aeronautics — Server Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d0f;
+    --surface: #111418;
+    --surface2: #181c22;
+    --border: #1e2530;
+    --accent: #e8a030;
+    --accent2: #4db8ff;
+    --accent3: #7fff6f;
+    --text: #d4d8e0;
+    --text-muted: #5a6070;
+    --text-bright: #f0f3f8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,160,48,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,160,48,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    background: rgba(11,13,15,0.97);
+    backdrop-filter: blur(12px);
+    padding: 0 2rem;
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .logo-gear {
+    width: 36px; height: 36px;
+    color: var(--accent);
+    animation: spin-slow 8s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+  .logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; color: var(--text-bright); line-height: 1; }
+  .logo-sub { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; }
+
+  nav { display: flex; gap: 4px; }
+
+  nav a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  nav a:hover, nav a.active { color: var(--accent); background: rgba(232,160,48,0.08); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 80px 2rem 60px;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(232,160,48,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(232,160,48,0.3);
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    letter-spacing: 0.04em;
+    color: var(--text-bright);
+    line-height: 0.9;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--accent); line-height: 1; }
+  .stat-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MAIN */
+  .main {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem 80px;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.06em; color: var(--text-bright); }
+  .section-count { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.1em; }
+
+  /* SEARCH */
+  .search-bar { position: relative; margin-bottom: 20px; }
+
+  .search-bar input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 20px 14px 48px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .search-bar input::placeholder { color: var(--text-muted); }
+  .search-bar input:focus { border-color: rgba(232,160,48,0.4); }
+
+  .search-icon {
+    position: absolute;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    width: 18px; height: 18px;
+  }
+
+  /* FILTER TABS */
+  .filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .filter-tab {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .filter-tab:hover { color: var(--text); border-color: rgba(232,160,48,0.3); }
+
+  .filter-tab.active {
+    color: var(--accent);
+    background: rgba(232,160,48,0.1);
+    border-color: rgba(232,160,48,0.4);
+  }
+
+  .filter-tab .tab-count {
+    margin-left: 6px;
+    color: var(--text-muted);
+    font-size: 0.58rem;
+  }
+
+  .filter-tab.active .tab-count { color: rgba(232,160,48,0.6); }
+
+  /* MODS GRID */
+  .mods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+  }
+
+  .mod-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .mod-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.2s;
+    transform-origin: bottom;
+  }
+
+  .mod-card:hover {
+    border-color: rgba(232,160,48,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  .mod-card:hover::before { transform: scaleY(1); }
+
+  .mod-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+
+  .mod-name { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; color: var(--text-bright); }
+
+  .mod-category-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .mod-id { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--text-muted); letter-spacing: 0.08em; margin-bottom: 8px; }
+
+  .mod-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .mod-footer { display: flex; align-items: center; justify-content: space-between; }
+
+  .mod-version {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--accent3);
+    background: rgba(127,255,111,0.08);
+    border: 1px solid rgba(127,255,111,0.15);
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+  }
+
+  .mod-links { display: flex; gap: 6px; }
+
+  .mod-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mod-link.cf { color: var(--accent); background: rgba(232,160,48,0.08); border: 1px solid rgba(232,160,48,0.2); }
+  .mod-link.mr { color: var(--accent2); background: rgba(77,184,255,0.08); border: 1px solid rgba(77,184,255,0.2); }
+  .mod-link:hover { opacity: 0.8; transform: scale(0.97); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    max-width: 560px;
+    width: 100%;
+    overflow: hidden;
+    animation: modalIn 0.2s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    padding: 20px 24px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .modal-title { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1.1rem; color: var(--text-bright); }
+  .modal-id { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--text-muted); margin-top: 3px; }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.4rem;
+    line-height: 1;
+    padding: 0 2px;
+    transition: color 0.15s;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover { color: var(--text-bright); }
+
+  .modal-body { padding: 20px 24px 24px; }
+
+  .modal-badges { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+
+  .modal-desc {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  .modal-links { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .modal-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 3px;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .modal-link.cf { color: var(--accent); background: rgba(232,160,48,0.1); border: 1px solid rgba(232,160,48,0.25); }
+  .modal-link.mr { color: var(--accent2); background: rgba(77,184,255,0.1); border: 1px solid rgba(77,184,255,0.25); }
+  .modal-link:hover { opacity: 0.8; }
+
+  /* CATEGORY COLORS */
+  .cat-utility   { background: rgba(232,160,48,0.12); color: #e8a030; border: 1px solid rgba(232,160,48,0.25); }
+  .cat-cosmetic  { background: rgba(255,120,200,0.12); color: #ff78c8; border: 1px solid rgba(255,120,200,0.25); }
+  .cat-api       { background: rgba(77,184,255,0.12); color: #4db8ff; border: 1px solid rgba(77,184,255,0.25); }
+  .cat-perf      { background: rgba(127,255,111,0.12); color: #7fff6f; border: 1px solid rgba(127,255,111,0.25); }
+  .cat-misc      { background: rgba(180,160,255,0.12); color: #b4a0ff; border: 1px solid rgba(180,160,255,0.25); }
+  .cat-map       { background: rgba(255,210,80,0.12); color: #ffd250; border: 1px solid rgba(255,210,80,0.25); }
+  .cat-server    { background: rgba(255,100,100,0.12); color: #ff6464; border: 1px solid rgba(255,100,100,0.25); }
+  .cat-adventure { background: rgba(255,150,80,0.12); color: #ff9650; border: 1px solid rgba(255,150,80,0.25); }
+  .cat-bugfix    { background: rgba(80,200,150,0.12); color: #50c896; border: 1px solid rgba(80,200,150,0.25); }
+  .cat-addon     { background: rgba(232,160,48,0.12); color: #e8a030; border: 1px solid rgba(232,160,48,0.25); }
+  .cat-worldgen  { background: rgba(100,220,120,0.12); color: #64dc78; border: 1px solid rgba(100,220,120,0.25); }
+  .cat-armor     { background: rgba(200,150,100,0.12); color: #c89664; border: 1px solid rgba(200,150,100,0.25); }
+  .cat-mobs      { background: rgba(220,100,100,0.12); color: #dc6464; border: 1px solid rgba(220,100,100,0.25); }
+
+  /* INFO CARDS */
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+  }
+
+  .info-card-title { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 16px; text-transform: uppercase; }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+  }
+
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--text-muted); font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.05em; }
+  .info-value { color: var(--text-bright); font-weight: 500; }
+
+  .copy-btn {
+    background: rgba(232,160,48,0.1);
+    border: 1px solid rgba(232,160,48,0.25);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: all 0.15s;
+  }
+
+  .copy-btn:hover { background: rgba(232,160,48,0.2); }
+
+  .ip-display { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--text-bright); letter-spacing: 0.06em; margin: 12px 0; }
+
+  /* DOWNLOAD BUTTON */
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--bg);
+    background: var(--accent);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 700;
+  }
+
+  .download-btn:hover { background: #ffb840; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,160,48,0.3); }
+
+  .download-section {
+    margin-top: 32px;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid rgba(232,160,48,0.2);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .download-section-text h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+
+  .download-section-text p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* DOWNLOAD PAGE */
+  .install-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 720px) {
+    .install-grid { grid-template-columns: 1fr; }
+  }
+
+  .install-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .install-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; height: 3px;
+  }
+
+  .install-card.card-cf::before  { background: linear-gradient(90deg, var(--accent), transparent); }
+  .install-card.card-manual::before { background: linear-gradient(90deg, var(--accent2), transparent); }
+
+  .install-card-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+
+  .install-card-badge.badge-cf     { color: var(--accent);  background: rgba(232,160,48,0.1);  border: 1px solid rgba(232,160,48,0.25); }
+  .install-card-badge.badge-manual { color: var(--accent2); background: rgba(77,184,255,0.1);  border: 1px solid rgba(77,184,255,0.25); }
+
+  .install-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+    color: var(--text-bright);
+    margin-bottom: 10px;
+  }
+
+  .install-card-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  /* CurseForge code block */
+  .cf-code-block {
+    background: var(--surface2);
+    border: 1px solid rgba(232,160,48,0.2);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .cf-code-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .cf-code-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+
+  /* Tutorial steps */
+  .install-steps {
+    list-style: none;
+    counter-reset: step-counter;
+  }
+
+  .install-steps li {
+    counter-increment: step-counter;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .install-steps li:last-child { border-bottom: none; }
+
+  .install-steps li::before {
+    content: counter(step-counter);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 700;
+    min-width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .install-card.card-cf .install-steps li::before    { background: rgba(232,160,48,0.12); color: var(--accent);  border: 1px solid rgba(232,160,48,0.25); }
+  .install-card.card-manual .install-steps li::before { background: rgba(77,184,255,0.12); color: var(--accent2); border: 1px solid rgba(77,184,255,0.25); }
+
+  .install-steps li strong { color: var(--text); font-weight: 500; }
+
+  .install-steps-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  /* NeoForge section */
+  .neoforge-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .neoforge-section-text h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+  }
+
+  .neoforge-section-text p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 480px;
+  }
+
+  .download-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--accent2);
+    background: rgba(77,184,255,0.1);
+    border: 1px solid rgba(77,184,255,0.3);
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .download-btn-secondary:hover { background: rgba(77,184,255,0.18); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(77,184,255,0.2); }
+
+  @media (max-width: 600px) {
+    .neoforge-section { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo" onclick="showPage('home')">
+      <svg class="logo-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/>
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+      </svg>
+      <div>
+        <div class="logo-text">All of Create</div>
+        <div class="logo-sub">Aeronautics · Server Hub</div>
+      </div>
+    </div>
+    <nav>
+      <a onclick="showPage('home')" id="nav-home" class="active">Home</a>
+      <a onclick="showPage('mods')" id="nav-mods">Mods</a>
+      <a onclick="showPage('info')" id="nav-info">Server Info</a>
+      <a onclick="showPage('download')" id="nav-download">Download</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-badge" id="hero-badge">Minecraft 1.21.1 · NeoForge · V1.0</div>
+    <h1>All of Create<br><span>Aeronautics</span></h1>
+    <p class="hero-desc">A Create-focused modpack centered around airships, trains, and mechanical automation. Build flying machines, automate everything, and explore the skies.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num" id="stat-mods">—</div>
+        <div class="stat-label">Mods</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-addons">—</div>
+        <div class="stat-label">Addons</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-cats">13</div>
+        <div class="stat-label">Categories</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;align-items:stretch;max-width:960px;margin:0 auto;">
+      <div class="info-card" style="cursor:pointer;border-color:rgba(232,160,48,0.2);width:280px;flex-shrink:0" onclick="showPage('mods')">
+        <div class="info-card-title">📦 Mod List</div>
+        <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6">Browse all mods with category filters, descriptions, and links to CurseForge and Modrinth.</p>
+        <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--accent);letter-spacing:0.1em">VIEW MODS →</div>
+      </div>
+      <div class="info-card" style="cursor:pointer;border-color:rgba(77,184,255,0.2);width:280px;flex-shrink:0" onclick="showPage('info')">
+        <div class="info-card-title" style="color:var(--accent2)">🖥 Server Info</div>
+        <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6">Connection details, pack version, modloader info, and quick-copy server IP.</p>
+        <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--accent2);letter-spacing:0.1em">VIEW INFO →</div>
+      </div>
+      <div class="info-card" style="border-color:rgba(127,255,111,0.2);width:280px;flex-shrink:0">
+        <div class="info-card-title" style="color:var(--accent3)">⬇ Download Pack</div>
+        <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6">Get the modpack via CurseForge or Modrinth. Requires at least 6GB RAM allocated.</p>
+        <div style="margin-top:14px">
+          <a id="home-download-btn" href="#" onclick="event.preventDefault();showPage('download')" style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--accent3);letter-spacing:0.1em;text-decoration:none">DOWNLOAD →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODS -->
+<div id="page-mods" class="page">
+  <div class="main" style="padding-top:40px">
+    <div class="section-header">
+      <div class="section-title">Mod List</div>
+      <div class="section-count" id="mods-count"></div>
+    </div>
+    <div class="search-bar">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="mod-search" placeholder="Search mods by name or id…" oninput="filterMods()">
+    </div>
+    <div class="filter-tabs" id="filter-tabs"></div>
+    <div class="mods-grid" id="mods-grid"></div>
+    <div class="no-results hidden" id="mods-no-results">No mods found matching your search.</div>
+
+    <div class="download-section">
+      <div class="download-section-text">
+        <h3>Download the Modpack</h3>
+        <p>Install via CurseForge App or Modrinth App. Allocate at least <strong style="color:var(--text)" id="dl-ram"></strong> of RAM before launching.</p>
+      </div>
+      <button id="download-btn" class="download-btn" onclick="showPage('download')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Modpack
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SERVER INFO -->
+<div id="page-info" class="page">
+  <div class="main" style="padding-top:40px">
+    <div class="section-header">
+      <div class="section-title">Server Info</div>
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-title">🔌 Connect</div>
+        <div class="ip-display" id="ip-display"></div>
+        <button class="copy-btn" onclick="copyIP()">COPY IP</button>
+        <div style="margin-top:16px">
+          <div class="info-row"><span class="info-label">Port</span><span class="info-value" id="info-port"></span></div>
+          <div class="info-row"><span class="info-label">Version</span><span class="info-value" id="info-mcver"></span></div>
+          <div class="info-row"><span class="info-label">Modloader</span><span class="info-value" id="info-loader"></span></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">📦 Pack Info</div>
+        <div class="info-row"><span class="info-label">Pack Name</span><span class="info-value" id="info-packname"></span></div>
+        <div class="info-row"><span class="info-label">Pack Version</span><span class="info-value" id="info-packver"></span></div>
+        <div class="info-row"><span class="info-label">MC Version</span><span class="info-value" id="info-mcver2"></span></div>
+        <div class="info-row"><span class="info-label">Total Mods</span><span class="info-value" id="info-modcount"></span></div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">🚀 Getting Started</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.9">
+          <p>1. Install the pack via <strong style="color:var(--text)">CurseForge</strong> or <strong style="color:var(--text)">Modrinth</strong></p>
+          <p>2. Allocate at least <strong style="color:var(--text)" id="gs-ram"></strong> of RAM</p>
+          <p>3. Connect to the server IP above</p>
+          <p>4. Open your recipe viewer (press <strong style="color:var(--accent)">R/U</strong> on an item via JEI)</p>
+          <p>5. Check the Mod List tab for all included mods</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">⚙️ Key Mods</div>
+        <div class="info-row"><span class="info-label">Core</span><span class="info-value">Create</span></div>
+        <div class="info-row"><span class="info-label">Airships</span><span class="info-value">Create Aeronautics</span></div>
+        <div class="info-row"><span class="info-label">Trains</span><span class="info-value">Create Railways Navigator</span></div>
+        <div class="info-row"><span class="info-label">Food</span><span class="info-value">Farmer's Delight</span></div>
+        <div class="info-row"><span class="info-label">Energy</span><span class="info-value">Create: New Age</span></div>
+        <div class="info-row"><span class="info-label">Claims</span><span class="info-value">Aeronautics Claims</span></div>
+      </div>
+    </div>
+
+    <div class="download-section" style="margin-top:32px">
+      <div class="download-section-text">
+        <h3>Download the Modpack</h3>
+        <p>Install via CurseForge App or Modrinth App. Allocate at least <strong style="color:var(--text)" id="dl-ram2"></strong> of RAM before launching.</p>
+      </div>
+      <button id="download-btn2" class="download-btn" onclick="showPage('download')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Modpack
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DOWNLOAD MODPACK -->
+<div id="page-download" class="page">
+  <div class="main" style="padding-top:40px">
+
+    <div class="section-header">
+      <div class="section-title">Download Modpack</div>
+      <div class="section-count">2 installation methods</div>
+    </div>
+
+    <!-- ── Installation method cards ──────────────────────────────────── -->
+    <div class="install-grid">
+
+      <!-- ── METHOD 1: Official (CurseForge) ──────────────────────────── -->
+      <article class="install-card card-cf">
+        <div class="install-card-badge badge-cf">Method 1</div>
+        <h2 class="install-card-title">Official Minecraft Installation</h2>
+        <p class="install-card-desc">
+          The easiest way to install the modpack. Use the CurseForge App to automatically
+          download and manage all mods — no manual file handling required.
+        </p>
+
+        <!-- EASY TO EDIT: CurseForge Code -->
+        <div class="cf-code-block">
+          <div>
+            <div class="cf-code-label">CurseForge Modpack Code</div>
+            <div class="cf-code-value" id="cf-code">XXXXXXXX</div>
+          </div>
+          <button
+            class="copy-btn"
+            onclick="navigator.clipboard.writeText(document.getElementById('cf-code').textContent).then(() => { this.textContent='COPIED!'; setTimeout(() => this.textContent='COPY CODE', 1500); })"
+          >COPY CODE</button>
+        </div>
+        <!-- END EASY TO EDIT -->
+
+        <p class="install-steps-title">Step-by-step tutorial</p>
+        <ol class="install-steps">
+          <li>Download and install the <strong>CurseForge App</strong> from curseforge.com.</li>
+          <li>Open <strong>CurseForge</strong> and sign in or continue as a guest.</li>
+          <li>Click <strong>Import</strong> or create a new profile for Minecraft.</li>
+          <li>Paste the modpack code shown above when prompted.</li>
+          <li>Click <strong>Install</strong> and wait for all mods to download.</li>
+          <li>Launch <strong>Minecraft</strong> through CurseForge and enjoy!</li>
+        </ol>
+      </article>
+
+      <!-- ── METHOD 2: Manual Installation ───────────────────────────── -->
+      <article class="install-card card-manual">
+        <div class="install-card-badge badge-manual">Method 2</div>
+        <h2 class="install-card-title">Manual Installation</h2>
+        <p class="install-card-desc">
+          Install the modpack manually by dropping the mod files directly into your
+          <code style="font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--accent2)">.minecraft/mods</code>
+          folder. Requires NeoForge to be installed separately.
+        </p>
+
+        <!-- Download ZIP button — ID is used by JavaScript -->
+        <div style="margin-bottom:24px">
+          <button
+            id="downloadModpackBtn"
+            class="download-btn"
+            style="width:100%;justify-content:center"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Modpack ZIP
+          </button>
+        </div>
+
+        <p class="install-steps-title">Step-by-step tutorial</p>
+        <ol class="install-steps">
+          <li>Click the <strong>Download Modpack ZIP</strong> button above.</li>
+          <li>Extract the downloaded <strong>ZIP archive</strong> to a temporary folder.</li>
+          <li>Press <strong>Win + R</strong> to open the Run dialog.</li>
+          <li>Type <strong>%appdata%</strong> and press Enter.</li>
+          <li>Navigate to <strong>Roaming › .minecraft</strong>.</li>
+          <li>Open (or create) the <strong>mods</strong> folder inside <code style="font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--accent2)">.minecraft</code>.</li>
+          <li>Copy <strong>all files</strong> from the extracted ZIP into the .minecraft folder.</li>
+          <li>Download <strong>NeoForge</strong> using the button in the section below.</li>
+          <li>Run the NeoForge installer and select <strong>Install client</strong>.</li>
+          <li>Open the Minecraft Launcher, select the <strong>NeoForge profile</strong>, and launch!</li>
+        </ol>
+      </article>
+
+    </div><!-- /.install-grid -->
+
+    <!-- ── NeoForge Download ─────────────────────────────────────────── -->
+    <section class="neoforge-section" aria-label="NeoForge Download">
+      <div class="neoforge-section-text">
+        <h3>⚙️ NeoForge Installer</h3>
+        <!-- EASY TO EDIT: NeoForge description -->
+        <p>
+          NeoForge is the modloader required to run this modpack.
+          Download the correct version for <strong style="color:var(--text)" id="dl-neoforge-ver">Minecraft 1.21.1</strong>,
+          run the installer, and select <strong style="color:var(--text)">Install client</strong>.
+        </p>
+        <!-- END EASY TO EDIT -->
+      </div>
+      <!-- NeoForge button — ID is used by JavaScript -->
+      <button id="downloadNeoForgeBtn" class="download-btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download NeoForge
+      </button>
+    </section>
+
+  </div><!-- /.main -->
+</div><!-- /#page-download -->
+
+<!-- MOD DETAIL MODAL -->
+<div class="modal-overlay" id="mod-modal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-name"></div>
+        <div class="modal-id" id="modal-id"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-badges">
+        <span class="mod-category-badge" id="modal-cat-badge"></span>
+        <span class="mod-version" id="modal-version"></span>
+      </div>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-links" id="modal-links"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  EASY CONFIG — edit everything here
+// ============================================================
+
+const SERVER_IP = "PlaceHolder.net";       // ← change your server IP here
+const SERVER_PORT = "25565";
+const MC_VERSION = "1.21.1";
+const MODLOADER = "NeoForge 21.1.232";
+const PACK_NAME = "All of Create: Aeronautics";
+const PACK_VERSION = "V1.0 (v1.8)";
+const PACK_RAM = "6GB";
+const MODPACK_DOWNLOAD_URL = "https://www.curseforge.com/minecraft/modpacks/all-of-create-aeronautics"; // kept for reference; buttons now navigate to the Download page
+const MODPACK_DOWNLOAD_LABEL = "Download Modpack"; // unused — buttons have fixed label now
+
+// ============================================================
+//  DOWNLOAD PAGE — edit the three values below to update all
+//  download links and the CurseForge code in one place.
+// ============================================================
+
+// EASY TO EDIT: CurseForge import code shown on the Download page.
+// Replace with the actual code generated in the CurseForge App.
+const CURSEFORGE_CODE = "vszYP5ro";
+
+// EASY TO EDIT: Direct URL to the modpack ZIP for manual installation.
+// Upload your ZIP somewhere (e.g. GitHub Releases, Google Drive) and paste the link here.
+const MODPACK_ZIP_URL = "https://drive.google.com/drive/folders/11f9vC-3qLw8FSTWDwfwWuYgzR8fq4JC_?usp=drive_link";
+
+// EASY TO EDIT: NeoForge installer download URL.
+// Always grab the correct version from https://neoforged.net/
+const NEOFORGE_URL = "https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.232/neoforge-21.1.232-installer.jar";
+
+// ============================================================
+//  MOD LIST — add or remove mods here
+//  Fields:
+//    name        — display name
+//    modId       — short mod id
+//    version     — version string
+//    category    — one of the CATEGORIES below
+//    description — short description shown on the card
+//    modrinthUrl — full modrinth URL (or "" to skip)
+//    cfUrl       — full curseforge URL (or "" to skip)
+// ============================================================
+
+// Available categories (used for filter tabs):
+// "Utility & QoL" | "Cosmetic" | "API & Library" | "Performance"
+// "Miscellaneous" | "Map & Information" | "Server Utility"
+// "Adventure & RPG" | "Bug Fixes" | "Addons" | "World Gen"
+// "Armor, Tools & Weapons" | "Mobs"
+
+const MODS_DATA = [
+  { name:"3d Skin Layers", modId:"skinlayers3d", version:"1.11.1", category:"Cosmetic", description:"Renders the outer layer of player skins in 3D, giving characters a more detailed and voluminous look.", modrinthUrl:"https://modrinth.com/mod/3dskinlayers", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/skin-layers-3d" },
+  { name:"Aeronautics Claims", modId:"aeroclaims", version:"0.9.0", category:"Server Utility", description:"Chunk claiming system integrated with Create Aeronautics, letting players protect their land and airships.", modrinthUrl:"https://modrinth.com/mod/create-aeronautics", cfUrl:"" },
+  { name:"All of Create Core", modId:"aoc", version:"2", category:"API & Library", description:"Core library mod required by the All of Create modpack. Provides shared utilities and data for other pack mods.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/aoc-core" },
+  { name:"All The Leaks", modId:"alltheleaks", version:"1.1.9+1.21.1-neoforge", category:"Performance", description:"Fixes various memory leaks in Minecraft and modded environments to keep long play sessions stable.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/alltheleaks" },
+  { name:"Amendments", modId:"amendments", version:"1.21-2.0.15", category:"Utility & QoL", description:"Adds small but meaningful improvements to vanilla blocks like signs, bells, and flower pots.", modrinthUrl:"https://modrinth.com/mod/amendments", cfUrl:"" },
+  { name:"AppleSkin", modId:"appleskin", version:"3.0.9+mc1.21", category:"Utility & QoL", description:"Shows saturation and exhaustion values on the HUD so you always know exactly how hungry you are.", modrinthUrl:"https://modrinth.com/mod/appleskin", cfUrl:"" },
+  { name:"Architectury", modId:"architectury", version:"13.0.8", category:"API & Library", description:"Cross-platform modding API that makes mods compatible across Fabric, Forge, and NeoForge.", modrinthUrl:"https://modrinth.com/mod/architectury-api", cfUrl:"" },
+  { name:"Backpacked", modId:"backpacked", version:"3.0.5", category:"Utility & QoL", description:"Adds craftable backpacks for extra portable storage, with unique achievements for explorers.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/backpacked" },
+  { name:"Bad Wither No Cookie Reloaded", modId:"bwncr", version:"3.20.4", category:"Server Utility", description:"Suppresses global boss sounds (Wither, Dragon) server-wide so only nearby players hear them.", modrinthUrl:"https://modrinth.com/mod/bad-wither-no-cookie", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/bad-wither-no-cookie-reloaded" },
+  { name:"Balm", modId:"balm", version:"21.0.56", category:"API & Library", description:"Abstraction layer library used by BlayTheNinth's mods to support multiple mod loaders.", modrinthUrl:"https://modrinth.com/mod/balm", cfUrl:"" },
+  { name:"Better Compatibility Checker", modId:"bcc", version:"21.1.8", category:"Utility & QoL", description:"Improves the mod compatibility check screen so players get clearer info about missing or mismatched mods.", modrinthUrl:"https://modrinth.com/mod/better-compatibility-checker", cfUrl:"" },
+  { name:"biomemusic mod", modId:"biomemusic", version:"3.5", category:"Miscellaneous", description:"Plays unique music tracks based on the biome you are currently in for a more immersive atmosphere.", modrinthUrl:"https://modrinth.com/mod/biome-music", cfUrl:"" },
+  { name:"Blueprint", modId:"blueprint", version:"8.1.0", category:"API & Library", description:"Library mod providing shared code, utilities, and systems used across Team Abnormals mods.", modrinthUrl:"https://modrinth.com/mod/blueprint", cfUrl:"" },
+  { name:"Boat Item View", modId:"boatiview", version:"0.0.6", category:"Utility & QoL", description:"Lets you see held items while sitting in a boat, fixing the awkward invisible-hands issue.", modrinthUrl:"https://modrinth.com/mod/boat-item-view", cfUrl:"" },
+  { name:"Boatload", modId:"boatload", version:"6.0.2", category:"Utility & QoL", description:"Adds bigger boats that can carry more passengers and cargo across water.", modrinthUrl:"https://modrinth.com/mod/boatload", cfUrl:"" },
+  { name:"Bookshelf", modId:"bookshelf", version:"21.1.81", category:"API & Library", description:"Common code library used by Darkhax mods, providing data-driven tools and utilities.", modrinthUrl:"https://modrinth.com/mod/bookshelf-lib", cfUrl:"" },
+  { name:"Caelus API", modId:"caelus", version:"7.0.1+1.21.1", category:"API & Library", description:"API that allows mods to add elytra-like flight behavior to custom chestplate items.", modrinthUrl:"https://modrinth.com/mod/caelus", cfUrl:"" },
+  { name:"Chat Heads", modId:"chat_heads", version:"0.15.1", category:"Cosmetic", description:"Shows a small player head icon next to each message in chat so you instantly know who is talking.", modrinthUrl:"https://modrinth.com/mod/chat-heads", cfUrl:"" },
+  { name:"Chunk Activity Tracker", modId:"chunkactivitytracker", version:"1.0.1", category:"Map & Information", description:"Tracks and displays which chunks have been recently active, helpful for monitoring farms and machinery.", modrinthUrl:"https://modrinth.com/mod/chunk-activity-tracker", cfUrl:"" },
+  { name:"clientcrafting mod", modId:"clientcrafting", version:"2.1", category:"Utility & QoL", description:"Moves crafting recipe calculations to the client side to reduce server lag during recipe lookups.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/client-crafting" },
+  { name:"Climbable Ropes for Create Aeronautics", modId:"climbable_ropes", version:"2.0.1", category:"Addons", description:"Adds climbable rope blocks compatible with Create Aeronautics contraptions and airships.", modrinthUrl:"https://modrinth.com/mod/create-aeronautics-climbable-rope", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-aeronautics-climbable-ropes" },
+  { name:"Cloth Config v15 API", modId:"cloth_config", version:"15.0.140", category:"API & Library", description:"Configuration screen API that provides a standard, pretty settings GUI for many mods.", modrinthUrl:"https://modrinth.com/mod/cloth-config", cfUrl:"" },
+  { name:"Clumps", modId:"clumps", version:"19.0.0.1", category:"Performance", description:"Groups XP orbs together into a single entity to dramatically reduce lag from large XP farms.", modrinthUrl:"https://modrinth.com/mod/clumps", cfUrl:"" },
+  { name:"Collective", modId:"collective", version:"8.22", category:"API & Library", description:"Shared library used by Serilum's mods, providing common utilities and configuration hooks.", modrinthUrl:"https://modrinth.com/mod/collective", cfUrl:"" },
+  { name:"Configurable", modId:"configurable", version:"3.5.1", category:"API & Library", description:"Provides annotation-based configuration management for mods to simplify config file handling.", modrinthUrl:"https://modrinth.com/mod/configurable", cfUrl:"" },
+  { name:"Configured Defaults", modId:"configureddefaults", version:"21.1.3", category:"Utility & QoL", description:"Lets pack creators ship default config values that apply on first launch without overwriting user changes.", modrinthUrl:"https://modrinth.com/mod/configured-defaults", cfUrl:"" },
+  { name:"Connectivity Mod", modId:"connectivity", version:"7.6", category:"Bug Fixes", description:"Fixes connection issues and improves network stability to help players stay connected to servers.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/connectivity" },
+  { name:"Continuity", modId:"continuity", version:"3.0.0+1.21.neoforge", category:"Cosmetic", description:"Enables Optifine-style connected textures for glass, bookshelves, and other blocks.", modrinthUrl:"https://modrinth.com/mod/continuity", cfUrl:"" },
+  { name:"Controlling", modId:"controlling", version:"19.0.5", category:"Utility & QoL", description:"Overhauls the key bindings screen with search, conflict detection, and cleaner layout.", modrinthUrl:"https://modrinth.com/mod/controlling", cfUrl:"" },
+  { name:"Copper Splashing Recipes", modId:"create_copper_splashing", version:"1", category:"Addons", description:"Adds Create bulk washing recipes to turn copper-related items into useful materials.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-copper-splashing" },
+  { name:"CoroUtil", modId:"coroutil", version:"1.21.0-1.3.9", category:"API & Library", description:"Utility library providing helper classes, networking tools, and world-gen utilities for CoroWare mods.", modrinthUrl:"https://modrinth.com/mod/coroutil", cfUrl:"" },
+  { name:"Corpse", modId:"corpse", version:"1.21.1-1.1.13", category:"Utility & QoL", description:"Spawns a corpse entity at your death location that holds all your items until you retrieve them.", modrinthUrl:"https://modrinth.com/mod/corpse", cfUrl:"" },
+  { name:"Crash Assistant", modId:"crash_assistant", version:"1.11.9", category:"Bug Fixes", description:"Improves crash reports with better formatting and suggestions to help diagnose issues faster.", modrinthUrl:"https://modrinth.com/mod/crash-assistant", cfUrl:"" },
+  { name:"CraterLib", modId:"craterlib", version:"3.1.2", category:"API & Library", description:"Core library for CraterCraft mods providing shared utilities and cross-version compatibility.", modrinthUrl:"https://modrinth.com/mod/craterlib", cfUrl:"" },
+  { name:"Create", modId:"create", version:"6.0.10", category:"Addons", description:"The core Create mod — adds rotating machinery, contraptions, trains, and automated factories to Minecraft.", modrinthUrl:"https://modrinth.com/mod/create", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create" },
+  { name:"Create Aeronautics", modId:"aeronautics_bundled", version:"1.2.1", category:"Addons", description:"Adds fully physics-simulated airships and aircraft to Create, letting you build and pilot flying machines.", modrinthUrl:"https://modrinth.com/mod/create-aeronautics", cfUrl:"" },
+  { name:"Create Aeronautics Curios Compat", modId:"aeronautics_curios_compat", version:"1.0", category:"Addons", description:"Compatibility patch letting Curios accessories work correctly with Create Aeronautics contraptions.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-aeronautics-x-curios-api-compat" },
+  { name:"Create Aquatic Ambitions", modId:"create_aquatic_ambitions", version:"2.0.2", category:"Addons", description:"Ocean-themed Create addon adding conduit-powered machines and new aquatic production lines.", modrinthUrl:"https://modrinth.com/mod/create-aquatic-ambitions", cfUrl:"" },
+  { name:"Create Bits 'n' Bobs", modId:"bits_n_bobs", version:"0.0.44", category:"Addons", description:"Small quality-of-life addon adding miscellaneous recipes and tweaks that complement the Create ecosystem.", modrinthUrl:"https://modrinth.com/mod/create-bits-n-bobs", cfUrl:"" },
+  { name:"Create Crafts & Additions", modId:"createaddition", version:"1.5.11", category:"Addons", description:"Bridges Create's rotation with Forge Energy, adding motors, alternators, and electric machines.", modrinthUrl:"https://modrinth.com/mod/createaddition", cfUrl:"" },
+  { name:"Create Diesel Generators", modId:"createdieselgenerators", version:"1.21.1-1.3.12", category:"Addons", description:"Adds diesel-powered engines and an oil drilling system to generate kinetic stress for large Create factories.", modrinthUrl:"https://modrinth.com/mod/create-diesel-generators", cfUrl:"" },
+  { name:"Create Encased", modId:"createcasing", version:"1.8.1-ht1", category:"Addons", description:"Adds new casing variants and decorative blocks that blend seamlessly with the Create aesthetic.", modrinthUrl:"https://modrinth.com/mod/create-encased", cfUrl:"" },
+  { name:"Create Hypertube", modId:"create_hypertube", version:"0.4.0-COMPAT", category:"Addons", description:"Adds vacuum-powered hypertubes that let players travel at high speed between distant locations.", modrinthUrl:"https://modrinth.com/mod/hypertube", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/hypertubes" },
+  { name:"Create More: Package Couriers", modId:"cmpackagecouriers", version:"2.3.0", category:"Addons", description:"Expands Create's packaging system with couriers that can automatically deliver packages around your base.", modrinthUrl:"https://modrinth.com/mod/create-more-package-couriers", cfUrl:"" },
+  { name:"Create Optical Mod", modId:"create_optical", version:"0.4.2", category:"Addons", description:"Transfers rotational force via laser beams, mirrors, and optical receptors for long-distance power delivery.", modrinthUrl:"https://modrinth.com/mod/create-optical", cfUrl:"" },
+  { name:"Create Propulsion: Simulated", modId:"createpropulsion", version:"1.1.4", category:"Addons", description:"Adds thrusters, stirling engines, and ion drives to power Create Aeronautics aircraft and vehicles.", modrinthUrl:"https://modrinth.com/mod/create-propulsion", cfUrl:"" },
+  { name:"Create Railways Navigator", modId:"createrailwaysnavigator", version:"1.21.1-beta-0.9.0-C6", category:"Addons", description:"In-game train schedule browser and route planner for Create's train network.", modrinthUrl:"https://modrinth.com/mod/create-railways-navigator", cfUrl:"" },
+  { name:"Create Slice & Dice", modId:"sliceanddice", version:"4.2.4", category:"Addons", description:"Integration mod that lets Farmer's Delight recipes run through Create machines like mixers and presses.", modrinthUrl:"https://modrinth.com/mod/slice-and-dice", cfUrl:"" },
+  { name:"Create Stuff 'N Additions", modId:"create_sa", version:"2.1.3", category:"Addons", description:"Adds extra Create-compatible machines, tools, and decorative blocks to expand your factory options.", modrinthUrl:"https://modrinth.com/mod/create-stuff-additions", cfUrl:"" },
+  { name:"Create Train Parts", modId:"create_train_parts", version:"0.4.0", category:"Addons", description:"Adds new train components and bogey types to expand the variety of locomotives you can assemble.", modrinthUrl:"https://modrinth.com/mod/create-train-parts", cfUrl:"" },
+  { name:"Create: Aeroworks", modId:"aeroworks", version:"1.2.10", category:"Addons", description:"Structural and decorative blocks designed specifically for building aircraft and airship hulls in Aeronautics.", modrinthUrl:"https://modrinth.com/mod/create-aeroworks", cfUrl:"" },
+  { name:"Create: Bells & Whistles", modId:"bellsandwhistles", version:"0.4.7-1.21.1", category:"Addons", description:"Decorative train accessories including bells, whistles, horns, and cosmetic train components.", modrinthUrl:"https://modrinth.com/mod/bellsandwhistles", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/bellsandwhistles" },
+  { name:"Create: Blaze Burner Fuels", modId:"create_blaze_burner_fuels", version:"1.0.2", category:"Addons", description:"Adds many new fuel types for Blaze Burners including briquettes, blaze cores, and peat.", modrinthUrl:"https://modrinth.com/mod/create-blaze-burner-fuels", cfUrl:"" },
+  { name:"Create: Blocks & Bogies", modId:"create_bb", version:"1.0.7", category:"Addons", description:"New structural blocks and bogey types for building more varied and detailed train designs.", modrinthUrl:"https://modrinth.com/mod/blocks-bogies", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-blocks-bogies" },
+  { name:"Create: Central Kitchen", modId:"create_central_kitchen", version:"2.4.0", category:"Addons", description:"Fully automates Farmer's Delight and other food mod recipes through Create's machinery.", modrinthUrl:"https://modrinth.com/mod/create-central-kitchen", cfUrl:"" },
+  { name:"Create: Connected", modId:"create_connected", version:"1.2.0-mc1.21.1", category:"Addons", description:"Quality-of-life Create addon adding kinetic batteries, configurable gearboxes, and sequenced pulse generators.", modrinthUrl:"https://modrinth.com/mod/create-connected", cfUrl:"" },
+  { name:"Create: Copycats+", modId:"copycats", version:"3.0.4+mc.1.21.1-neoforge", category:"Addons", description:"Expands Copycat blocks with more shapes (panels, beams, etc.) to use any texture in more build contexts.", modrinthUrl:"https://modrinth.com/mod/copycats", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/copycats" },
+  { name:"Create: Deep Dark", modId:"create_deep_dark", version:"3.0.2", category:"Addons", description:"End-game Deep Dark themed Create addon with echo alloy, new machinery, and powerful gear.", modrinthUrl:"https://modrinth.com/mod/create-deep-dark", cfUrl:"" },
+  { name:"Create: Dragons Plus", modId:"create_dragons_plus", version:"1.10.1", category:"Addons", description:"Dragon-themed Create addon adding new materials and machines themed around Ender Dragon content.", modrinthUrl:"https://modrinth.com/mod/create-dragons-plus", cfUrl:"" },
+  { name:"Create: Dreams n' Desires", modId:"dndesires", version:"2.3a-BETA", category:"Addons", description:"Adds aesthetic and decorative Create-themed blocks focused on soft, ornamental build styles.", modrinthUrl:"https://modrinth.com/mod/create-dreams-and-desires", cfUrl:"" },
+  { name:"Create: Enchantment Industry", modId:"create_enchantment_industry", version:"2.3.1", category:"Addons", description:"Automates enchanting and disenchanting using liquid XP, grindstones, and new Create machines.", modrinthUrl:"https://modrinth.com/mod/create-enchantment-industry", cfUrl:"" },
+  { name:"Create: Escalated", modId:"escalated", version:"1.3.0", category:"Addons", description:"Adds escalators powered by Create's kinetic network for moving players between floors smoothly.", modrinthUrl:"https://modrinth.com/mod/escalated", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-escalated" },
+  { name:"Create: Factory", modId:"create_factory", version:"0.7a-1.21.1", category:"Addons", description:"Industrial-themed Create addon adding heavy factory machinery and production blocks.", modrinthUrl:"https://modrinth.com/mod/create-factory", cfUrl:"" },
+  { name:"Create: Fantasizing Again", modId:"create_fantasizing", version:"1.1.3", category:"Addons", description:"Fantasy-themed Create addon introducing magical materials and mystical machines into the Create ecosystem.", modrinthUrl:"https://modrinth.com/mod/create-fantasizing-again", cfUrl:"" },
+  { name:"Create: Fast Schematic Cannon", modId:"createfastschematiccannon", version:"1.4.1-neoforge", category:"Addons", description:"Dramatically speeds up the Schematic Cannon, making large structure printing much faster.", modrinthUrl:"https://modrinth.com/mod/create-fast-schematic-cannon", cfUrl:"" },
+  { name:"Create: Food", modId:"createfood", version:"2.4.0", category:"Addons", description:"Adds food items and recipes that integrate with Create machines for automated cooking and processing.", modrinthUrl:"https://modrinth.com/mod/create-food", cfUrl:"" },
+  { name:"Create: Framed", modId:"createframed", version:"1.7.3", category:"Addons", description:"Adds framed blocks that can display any texture, inspired by FramedBlocks but built for Create.", modrinthUrl:"https://modrinth.com/mod/create-framed", cfUrl:"" },
+  { name:"Create: Easy Stone Generators", modId:"create_generators", version:"1.2.5", category:"Addons", description:"Adds new generators to generate all types of stones.", modrinthUrl:"https://modrinth.com/mod/create-stone-generators/version/qmQShUcD", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-stone-generators" },
+  { name:"Create: Integrated Farming", modId:"create_integrated_farming", version:"1.2.2", category:"Addons", description:"Automates crop harvesting, planting, and processing entirely within Create's contraption system.", modrinthUrl:"https://modrinth.com/mod/create-integrated-farming", cfUrl:"" },
+  { name:"Create: Metalwork", modId:"createmetalwork", version:"2.0.0", category:"Addons", description:"Expands metal processing in Create with new alloys, ingots, and metalworking machine recipes.", modrinthUrl:"https://modrinth.com/mod/create-metalwork", cfUrl:"" },
+  { name:"Create: New Age", modId:"create_new_age", version:"1.1.7c+mc1.21.1", category:"Addons", description:"Bridges Create and Forge Energy with solar panels, nuclear reactors, electrical cables, and magnets.", modrinthUrl:"https://modrinth.com/mod/create-new-age", cfUrl:"" },
+  { name:"Create: Ornithopter Glider", modId:"createornithopterglider", version:"1.0.3-1.21.1", category:"Addons", description:"Adds a craftable ornithopter glider item for short-range personal flight above your Create constructions.", modrinthUrl:"https://modrinth.com/mod/create-ornithopter-glider", cfUrl:"" },
+  { name:"Create: Pattern Schematics", modId:"create_pattern_schematics", version:"2.0.10", category:"Addons", description:"Allows repeating schematic designs in a grid pattern for efficient large-scale automated construction.", modrinthUrl:"https://modrinth.com/mod/create-pattern-schematics", cfUrl:"" },
+  { name:"Create: Power Grid", modId:"powergrid", version:"0.5.5.1", category:"Addons", description:"Adds a wireless power grid system so Create networks can transfer kinetic stress without physical shafts.", modrinthUrl:"https://modrinth.com/mod/power-grid", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/power-grid" },
+  { name:"Create: Prismatic Shine", modId:"createprism", version:"1.2.2", category:"Addons", description:"Adds prism blocks and light-manipulating decorative elements that interact with Create Optical beams.", modrinthUrl:"https://modrinth.com/mod/create-prismatic-shine", cfUrl:"" },
+  { name:"Create: Rubberworks", modId:"rubberworks", version:"1.1.2", category:"Addons", description:"Adds rubber as a harvestable resource and crafting material for belts, seals, and gaskets in Create.", modrinthUrl:"https://modrinth.com/mod/create-rubberworks", cfUrl:"" },
+  { name:"create: things and misc", modId:"create_things_and_misc", version:"4.1.0", category:"Addons", description:"Miscellaneous Create-compatible blocks, items, and small machines that fill gaps in the Create ecosystem.", modrinthUrl:"https://modrinth.com/mod/create-misc-and-things", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-misc-and-things" },
+  { name:"Create: Totem Factory", modId:"totemfactory", version:"1.1.1", category:"Addons", description:"Automates the creation of Totems of Undying through a multi-step Create production line using tumbaga alloy.", modrinthUrl:"https://modrinth.com/mod/create-totem-factory", cfUrl:"" },
+  { name:"Create: Trading Floor", modId:"trading_floor", version:"3.0.16", category:"Addons", description:"Automated villager trading depot that integrates with Create's item transport and filtering systems.", modrinthUrl:"https://modrinth.com/mod/create-trading-floor", cfUrl:"" },
+  { name:"Create: Transmission", modId:"createtransmission", version:"1.1.2+neoforge-create6-1.21.1", category:"Addons", description:"Adds long-distance kinetic transmission belts and pulleys for connecting distant Create networks.", modrinthUrl:"https://modrinth.com/mod/create-transmission!", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-transmission" },
+  { name:"Create: Vibrant Vaults", modId:"create_vibrant_vaults", version:"0.3.2", category:"Addons", description:"Adds vault-themed decorative blocks and Create-processable materials from Trial Chamber content.", modrinthUrl:"https://modrinth.com/mod/create-vibrant-vaults", cfUrl:"" },
+  { name:"CreateBetterFps", modId:"createbetterfps", version:"1.1.4", category:"Performance", description:"Optimizes Create's rendering and tick logic to improve FPS in complex contraption-heavy worlds.", modrinthUrl:"", cfUrl:"https://modrinth.com/mod/createbetterfps" },
+  { name:"Cupboard mod", modId:"cupboard", version:"3.5", category:"API & Library", description:"Utility library used by Serilum's mods providing shared configuration and registration helpers.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/cupboard" },
+  { name:"Curios API", modId:"curios", version:"9.5.1+1.21.1", category:"API & Library", description:"Flexible accessory slot API that lets mods add rings, amulets, and custom equipment beyond vanilla armor.", modrinthUrl:"https://modrinth.com/mod/curios", cfUrl:"" },
+  { name:"Cut Through", modId:"cutthrough", version:"21.1.0", category:"Utility & QoL", description:"Lets players cut through certain blocks like grass and crops without stopping movement mid-stride.", modrinthUrl:"https://modrinth.com/mod/cut-through", cfUrl:"" },
+  { name:"Design n' Decor", modId:"dndecor", version:"2.2b", category:"Miscellaneous", description:"Adds furniture, lamps, curtains, and many decorative building blocks for detailed interior design.", modrinthUrl:"https://modrinth.com/mod/create-design-n-decor", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-design-n-decor" },
+  { name:"Despawn Tweaks", modId:"despawntweaks", version:"1.0.0", category:"Utility & QoL", description:"Configures item and mob despawn timers so important drops last longer before vanishing.", modrinthUrl:"https://modrinth.com/mod/despawn-tweaks", cfUrl:"" },
+  { name:"DragonLib", modId:"dragonlib", version:"1.21.1-beta-3.0.26", category:"API & Library", description:"Library mod used by Wyrmroost and other dragon-related mods for shared animation and entity code.", modrinthUrl:"https://modrinth.com/mod/dragonlib", cfUrl:"" },
+  { name:"Drippy Loading Screen", modId:"drippyloadingscreen", version:"3.1.2", category:"Cosmetic", description:"Fully customizable loading screen replacing the vanilla dirt background with custom images and layouts.", modrinthUrl:"https://modrinth.com/mod/drippy-loading-screen", cfUrl:"" },
+  { name:"e4mc", modId:"e4mc", version:"6.1.0", category:"Server Utility", description:"Open your single-player world to friends over the internet without port forwarding using a relay.", modrinthUrl:"https://modrinth.com/mod/e4mc", cfUrl:"" },
+  { name:"Easy Anvils", modId:"easyanvils", version:"21.1.0", category:"Utility & QoL", description:"Overhauls anvil mechanics — removes level cap, adjusts costs, and makes renaming much cheaper.", modrinthUrl:"https://modrinth.com/mod/easy-anvils", cfUrl:"" },
+  { name:"Easy Magic", modId:"easymagic", version:"21.1.4", category:"Utility & QoL", description:"Improves the enchanting table UI, letting you reroll enchantment options and see names in advance.", modrinthUrl:"https://modrinth.com/mod/easy-magic", cfUrl:"" },
+  { name:"EnchantmentDescriptions", modId:"enchdesc", version:"21.1.9", category:"Utility & QoL", description:"Adds tooltip descriptions to all enchantments so you can understand what they do without a wiki.", modrinthUrl:"https://modrinth.com/mod/enchantment-descriptions", cfUrl:"" },
+  { name:"Entity Model Features", modId:"entity_model_features", version:"3.2.4", category:"Cosmetic", description:"Supports Optifine-format custom entity models from resource packs for more detailed mob appearances.", modrinthUrl:"https://modrinth.com/mod/entity-model-features", cfUrl:"" },
+  { name:"Entity Texture Features", modId:"entity_texture_features", version:"7.1", category:"Cosmetic", description:"Enables random, emissive, and custom entity textures from resource packs, similar to Optifine CEM.", modrinthUrl:"https://modrinth.com/mod/entitytexturefeatures", cfUrl:"" },
+  { name:"EpheroLib", modId:"epherolib", version:"1.2.0", category:"API & Library", description:"Shared library for Ephero mods providing common utilities, networking, and registration tools.", modrinthUrl:"https://modrinth.com/mod/epherolib", cfUrl:"" },
+  { name:"Euphoria Patcher", modId:"euphoria_patcher", version:"1.9.2-r5.8.1-neoforge", category:"Cosmetic", description:"Shader patcher that fixes visual glitches and adds extra features when using Euphoria shader packs.", modrinthUrl:"https://modrinth.com/mod/euphoria-patches", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/euphoria-patches" },
+  { name:"Extra Create Recipes", modId:"extra_create_recipes", version:"1", category:"Addons", description:"Data pack that adds extra sensible recipes to Create machines to fill gaps in the vanilla processing chain.", modrinthUrl:"https://modrinth.com/mod/create-extra-recipes-kuma", cfUrl:"https://www.curseforge.com/minecraft/texture-packs/extra-create-recipes" },
+  { name:"FancyMenu", modId:"fancymenu", version:"3.9.1", category:"Cosmetic", description:"Fully customizable main menu with custom backgrounds, buttons, layouts, and animated elements.", modrinthUrl:"https://modrinth.com/mod/fancymenu", cfUrl:"" },
+  { name:"Farmer's Delight", modId:"farmersdelight", version:"1.3.2", category:"Miscellaneous", description:"Expands farming and cooking with new crops, meals, cutting boards, cooking pots, and kitchen tools.", modrinthUrl:"https://modrinth.com/mod/farmers-delight", cfUrl:"" },
+  { name:"Ferrite Core", modId:"ferritecore", version:"7.0.3", category:"Performance", description:"Reduces memory usage by optimizing how block states are stored in memory — significant RAM savings.", modrinthUrl:"https://modrinth.com/mod/ferrite-core", cfUrl:"" },
+  { name:"Forgified Fabric API", modId:"fabric_api", version:"0.116.7+2.2.4+1.21.1", category:"API & Library", description:"Ports the Fabric API to NeoForge via Sinytra Connector, enabling Fabric mods to run on NeoForge.", modrinthUrl:"https://modrinth.com/mod/forgified-fabric-api", cfUrl:"" },
+  { name:"Framework", modId:"framework", version:"0.13.11", category:"API & Library", description:"Multi-loader library framework providing shared registration, networking, and config APIs.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/framework" },
+  { name:"FTB Filter System", modId:"ftbfiltersystem", version:"21.1.4", category:"Utility & QoL", description:"Advanced item filtering system with tag-based, NBT, and compound filters for precise sorting.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/ftb-filter-system" },
+  { name:"FTB Library", modId:"ftblibrary", version:"2101.1.31", category:"API & Library", description:"Core library for FTB mods providing GUI toolkit, config management, and network utilities.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/ftb-library-forge" },
+  { name:"FTB Teams", modId:"ftbteams", version:"2101.1.10", category:"Server Utility", description:"Player team system for FTB mods allowing shared claims, quests, and cooperative progression.", modrinthUrl:"https://modrinth.com/mod/ftbloader", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/ftb-teams-forge" },
+  { name:"FTB XMod Compat", modId:"ftbxmodcompat", version:"21.1.8", category:"API & Library", description:"Compatibility layer connecting FTB mods with other popular mods for seamless integration.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/ftb-xmod-compat" },
+  { name:"Gallery", modId:"gallery", version:"2.0.1", category:"Miscellaneous", description:"Adds in-game paintings with a large library of artworks that can be hung and displayed on walls.", modrinthUrl:"https://modrinth.com/mod/gallery", cfUrl:"" },
+  { name:"Gears n' Kinetics", modId:"gnkinetics", version:"1.0m", category:"Addons", description:"Adds decorative and functional gear blocks that connect visually and kinetically to Create machinery.", modrinthUrl:"https://modrinth.com/mod/gears-n-kinetics", cfUrl:"" },
+  { name:"GeckoLib 4", modId:"geckolib", version:"4.8.4", category:"API & Library", description:"Animation engine library enabling complex 3D keyframe animations for modded entities and blocks.", modrinthUrl:"https://modrinth.com/mod/geckolib", cfUrl:"" },
+  { name:"Gpu memory leak fix", modId:"gpumemleakfix", version:"1.8", category:"Bug Fixes", description:"Patches a GPU memory leak in vanilla Minecraft that causes VRAM usage to grow over long sessions.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/fix-gpu-memory-leak" },
+  { name:"Handcrafted", modId:"handcrafted", version:"4.0.3", category:"Miscellaneous", description:"Aesthetic furniture mod with sofas, chairs, shelves, tables, and kitchen blocks for detailed homes.", modrinthUrl:"https://modrinth.com/mod/handcrafted", cfUrl:"" },
+  { name:"Highlighter", modId:"highlighter", version:"1.1.11", category:"Utility & QoL", description:"Highlights blocks and entities when you look at them, making it easier to identify items at a glance.", modrinthUrl:"https://modrinth.com/mod/highlighter", cfUrl:"" },
+  { name:"Iceberg", modId:"iceberg", version:"1.3.2", category:"API & Library", description:"Library mod providing rendering, GUI, and event hooks used by Aquamirae and other Iceberg-based mods.", modrinthUrl:"https://modrinth.com/mod/iceberg", cfUrl:"" },
+  { name:"ImmediatelyFast", modId:"immediatelyfast", version:"1.6.10+1.21.1", category:"Performance", description:"Speeds up immediate-mode rendering (HUD, GUI, entities) with minimal visual changes for better FPS.", modrinthUrl:"https://modrinth.com/mod/immediatelyfast", cfUrl:"" },
+  { name:"Integrated API", modId:"integrated_api", version:"1.7.4+1.21.1-neoforge", category:"API & Library", description:"Core API for Integrated Dynamics mods providing shared logic, variable systems, and network infrastructure.", modrinthUrl:"https://modrinth.com/mod/integrated-api", cfUrl:"" },
+  { name:"Integrated Dungeons and Structures", modId:"idas", version:"1.13.6+1.21.1-neoforge", category:"World Gen", description:"Adds over 100 new dungeons, structures, and ruins to explore across all biomes and dimensions.", modrinthUrl:"https://modrinth.com/mod/idas", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/idas" },
+  { name:"Integrated Stronghold", modId:"integrated_stronghold", version:"1.1.4+1.21.1-neoforge", category:"World Gen", description:"Overhauls End Stronghold generation with larger, more intricate layouts full of new rooms and loot.", modrinthUrl:"https://modrinth.com/mod/integrated-stronghold", cfUrl:"" },
+  { name:"Integrated Villages", modId:"integrated_villages", version:"1.3.3+1.21.1-neoforge", category:"World Gen", description:"Revamps and expands village generation with new building variants and better structural coherence.", modrinthUrl:"https://modrinth.com/mod/integrated-villages", cfUrl:"" },
+  { name:"Iris", modId:"iris", version:"1.8.12-snapshot+mc1.21.1", category:"Performance", description:"Shader mod compatible with Optifine shader packs, providing beautiful visuals with good performance.", modrinthUrl:"https://modrinth.com/mod/iris", cfUrl:"" },
+  { name:"Jade", modId:"jade", version:"15.10.5+neoforge", category:"Map & Information", description:"Shows block and entity information in a HUD tooltip when you look at something — a WAILA-style mod.", modrinthUrl:"https://modrinth.com/mod/jade", cfUrl:"" },
+  { name:"Just Enough Breeding", modId:"justenoughbreeding", version:"3.1.0", category:"Map & Information", description:"Shows animal breeding requirements and offspring probabilities directly in JEI.", modrinthUrl:"https://modrinth.com/mod/justenoughbreeding", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/justenoughbreeding" },
+  { name:"Just Enough Items", modId:"jei", version:"19.27.0.336", category:"Utility & QoL", description:"Recipe viewer and item browser — look up any recipe, usage, or processing chain from your inventory.", modrinthUrl:"https://modrinth.com/mod/jei", cfUrl:"" },
+  { name:"Just Enough Professions (JEP)", modId:"justenoughprofessions", version:"4.0.5", category:"Map & Information", description:"Shows which workstations unlock each villager profession in JEI for quick reference.", modrinthUrl:"https://modrinth.com/mod/just-enough-professions-jep", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/just-enough-professions-jep" },
+  { name:"Just Enough Resources", modId:"jeresources", version:"1.6.0.17", category:"Map & Information", description:"Adds world gen, mob loot, and dungeon chest tabs to JEI so you know exactly where to find resources.", modrinthUrl:"https://modrinth.com/mod/just-enough-resources-jer", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/just-enough-resources-jer" },
+  { name:"Konkrete", modId:"konkrete", version:"1.9.9", category:"API & Library", description:"Library used by Keksuccino's mods providing shared config, GUI, and event handling utilities.", modrinthUrl:"https://modrinth.com/mod/konkrete", cfUrl:"" },
+  { name:"leaky mod", modId:"leaky", version:"2.4", category:"Bug Fixes", description:"Detects and patches common memory leaks in mods and vanilla code to keep the JVM healthy over time.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/leaky" },
+  { name:"Lithium", modId:"lithium", version:"0.15.3+mc1.21.1", category:"Performance", description:"General-purpose server-side optimization mod that speeds up game logic, AI, and chunk loading.", modrinthUrl:"https://modrinth.com/mod/lithium", cfUrl:"" },
+  { name:"Lithostitched", modId:"lithostitched", version:"1.7.9", category:"World Gen", description:"Library for advanced world generation customization, used by structure and terrain generation mods.", modrinthUrl:"https://modrinth.com/mod/lithostitched", cfUrl:"" },
+  { name:"Load My F***ing Tags", modId:"lmft", version:"1.1.1+1.21.9", category:"Bug Fixes", description:"Fixes tag loading order issues that cause crashes or missing recipes in heavily modded environments.", modrinthUrl:"https://modrinth.com/mod/lmft", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/lmft" },
+  { name:"Lootintegrations mod", modId:"lootintegrations", version:"4.7", category:"Utility & QoL", description:"Injects custom items from mods into vanilla loot tables so modded gear appears in chests and drops.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/loot-integrations" },
+  { name:"Melody", modId:"melody", version:"1.0.10", category:"Utility & QoL", description:"Extends FancyMenu with audio playback options, letting custom menus have background music.", modrinthUrl:"https://modrinth.com/mod/melody", cfUrl:"" },
+  { name:"ModernFix", modId:"modernfix", version:"5.27.11+mc1.21.1", category:"Performance", description:"All-in-one optimization mod reducing startup time, memory usage, and fixing performance regressions.", modrinthUrl:"https://modrinth.com/mod/modernfix", cfUrl:"" },
+  { name:"Moonlight Lib", modId:"moonlight", version:"1.21.1-3.0.16", category:"API & Library", description:"Library for MehVahdJukaar's mods providing shared utilities for multi-loader compat and data-driven content.", modrinthUrl:"https://modrinth.com/mod/moonlight", cfUrl:"" },
+  { name:"Mouse Tweaks", modId:"mousetweaks", version:"2.26.1", category:"Utility & QoL", description:"Enhances inventory mouse behavior with drag-to-fill, right-click drag, and scroll-to-move mechanics.", modrinthUrl:"https://modrinth.com/mod/mouse-tweaks", cfUrl:"" },
+  { name:"Neruina", modId:"neruina", version:"3.3.1", category:"Bug Fixes", description:"Prevents a single ticking entity from crashing the entire game — isolates the faulty entity instead.", modrinthUrl:"https://modrinth.com/mod/neruina", cfUrl:"" },
+  { name:"NetherPortalFix", modId:"netherportalfix", version:"21.1.1", category:"Bug Fixes", description:"Fixes Nether portal linking so players always return through the correct portal they came from.", modrinthUrl:"https://modrinth.com/mod/netherportalfix", cfUrl:"" },
+  { name:"No Chat Reports", modId:"nochatreports", version:"1.21.1-v2.9.1", category:"Server Utility", description:"Removes Mojang's chat reporting signatures to protect player privacy on servers.", modrinthUrl:"https://modrinth.com/mod/no-chat-reports", cfUrl:"" },
+  { name:"NotEnoughAnimations", modId:"notenoughanimations", version:"1.12.3", category:"Cosmetic", description:"Adds missing animations like eating, swimming, holding maps, and more in third-person view.", modrinthUrl:"https://modrinth.com/mod/not-enough-animations", cfUrl:"" },
+  { name:"Open Parties and Claims", modId:"openpartiesandclaims", version:"0.26.3", category:"Server Utility", description:"Party and chunk-claiming system with forceloading, party permissions, and minimap integration.", modrinthUrl:"https://modrinth.com/mod/open-parties-and-claims", cfUrl:"" },
+  { name:"PacketFixer", modId:"packetfixer", version:"3.3.1", category:"Bug Fixes", description:"Fixes packet size limit issues that can cause disconnects when many mods send large data packets.", modrinthUrl:"https://modrinth.com/mod/packet-fixer", cfUrl:"" },
+  { name:"Patchouli", modId:"patchouli", version:"1.21.1-93-NEOFORGE", category:"API & Library", description:"In-game guidebook API that lets mods ship beautiful, readable documentation books accessible in-game.", modrinthUrl:"https://modrinth.com/mod/patchouli", cfUrl:"" },
+  { name:"Paxi", modId:"paxi", version:"1.21.1-NeoForge-5.1.3", category:"Utility & QoL", description:"Automatically loads data packs and resource packs bundled with a modpack without manual installation.", modrinthUrl:"https://modrinth.com/mod/paxi", cfUrl:"" },
+  { name:"Personality", modId:"personality", version:"5.0.2", category:"Miscellaneous", description:"Adds personality traits and varied idle behaviors to mobs and NPCs for a more lively world.", modrinthUrl:"https://modrinth.com/mod/personality", cfUrl:"" },
+  { name:"Pick Up Notifier", modId:"pickupnotifier", version:"21.1.1", category:"Utility & QoL", description:"Shows a notification when you pick up an item, displaying the item name and quantity on screen.", modrinthUrl:"https://modrinth.com/mod/pick-up-notifier", cfUrl:"" },
+  { name:"Placebo", modId:"placebo", version:"9.9.1", category:"API & Library", description:"Library mod for Shadows_of_Fire mods providing shared utilities, loot system helpers, and API tools.", modrinthUrl:"https://modrinth.com/mod/placebo", cfUrl:"" },
+  { name:"Player Animator", modId:"playeranimator", version:"2.0.4+1.21.1", category:"API & Library", description:"Library that enables mods to play complex keyframed animations on the player model.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/player-animator" },
+  { name:"Polymorph", modId:"polymorph", version:"1.1.0+1.21.1", category:"Utility & QoL", description:"Resolves recipe conflicts by letting you choose which output you want when multiple recipes match.", modrinthUrl:"https://modrinth.com/mod/polymorph", cfUrl:"" },
+  { name:"PrickleMC", modId:"prickle", version:"21.1.11", category:"API & Library", description:"Library mod providing data-driven game mechanics and shared utilities for PrickleWorks mods.", modrinthUrl:"https://modrinth.com/mod/prickle", cfUrl:"" },
+  { name:"Puzzles Lib", modId:"puzzleslib", version:"21.1.50", category:"API & Library", description:"Multi-loader library for Fuzs mods providing cross-platform events, registries, and network abstractions.", modrinthUrl:"https://modrinth.com/mod/puzzles-lib", cfUrl:"" },
+  { name:"Quark", modId:"quark", version:"4.1-480", category:"Utility & QoL", description:"Large vanilla+ mod adding hundreds of small tweaks and features, each toggleable independently.", modrinthUrl:"https://modrinth.com/mod/quark", cfUrl:"" },
+  { name:"recipeessentials mod", modId:"recipeessentials", version:"4.0", category:"Utility & QoL", description:"Adds recipe tweaks and essential crafting helpers to make common modded workflows less grindy.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/recipe-essentials-forge-fabric" },
+  { name:"Redirected", modId:"redirected", version:"1.0.0", category:"Bug Fixes", description:"Fixes redirect loops and resource location conflicts that cause missing textures or recipe errors.", modrinthUrl:"https://modrinth.com/mod/redirected", cfUrl:"" },
+  { name:"Reese's Sodium Options", modId:"reeses_sodium_options", version:"1.8.3+mc1.21.4", category:"Performance", description:"Replaces Sodium's video settings screen with a cleaner, more organized options UI.", modrinthUrl:"https://modrinth.com/mod/reeses-sodium-options", cfUrl:"" },
+  { name:"Reliable Recipes", modId:"reliable_recipes", version:"2.1.0", category:"Bug Fixes", description:"Ensures recipe loading is consistent and prevents broken or missing recipes in complex mod environments.", modrinthUrl:"https://modrinth.com/mod/reliable-recipes", cfUrl:"" },
+  { name:"Reliable Remover", modId:"reliable_remover", version:"2.5.0", category:"Utility & QoL", description:"Safely removes specific recipes from the game via config without causing crashes or conflicts.", modrinthUrl:"https://modrinth.com/mod/reliable-remover", cfUrl:"" },
+  { name:"Resource Pack Overrides", modId:"resourcepackoverhttps://www.curseforge.com/minecraft/mc-mods/smarter-farmers-farmers-replantrides", version:"21.1.0", category:"Utility & QoL", description:"Lets modpack creators lock and arrange resource packs so players have the intended visual experience.", modrinthUrl:"https://modrinth.com/mod/resource-pack-overrides", cfUrl:"" },
+  { name:"Resourceful Lib", modId:"resourcefullib", version:"3.0.12", category:"API & Library", description:"Library providing data-driven utilities, networking, and rendering helpers for Team Resourceful mods.", modrinthUrl:"https://modrinth.com/mod/resourceful-lib", cfUrl:"" },
+  { name:"Sable", modId:"sable", version:"1.2.2", category:"Addons", description:"Shadowy Create addon adding new dark-themed machines and materials inspired by the deep underground.", modrinthUrl:"https://modrinth.com/mod/sable", cfUrl:"" },
+  { name:"Sable: Stuff&Additions Compatibility", modId:"sable_sa_compat", version:"1.0.3", category:"Addons", description:"Compatibility patch between Sable and Create: Stuff & Additions for cross-mod recipe integration.", modrinthUrl:"https://modrinth.com/mod/create-stuff-additions", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-stuff-additions" },
+  { name:"Searchables", modId:"searchables", version:"1.0.2", category:"API & Library", description:"Library that adds searchable dropdown components to mod GUIs for easier item and option filtering.", modrinthUrl:"https://modrinth.com/mod/searchables", cfUrl:"" },
+  { name:"ServerBrowser", modId:"serverbrowser", version:"1.4.2", category:"Utility & QoL", description:"Adds an in-game server browser tab for discovering and connecting to public servers more easily.", modrinthUrl:"https://modrinth.com/mod/server-browser", cfUrl:"" },
+  { name:"Simple RPC", modId:"simplerpc", version:"4.1.1+release.0", category:"Utility & QoL", description:"Customizable Discord Rich Presence integration showing your current Minecraft activity to friends.", modrinthUrl:"https://modrinth.com/mod/simple-discord-rpc", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/simple-discord-rpc" },
+  { name:"Smarter Farmers", modId:"smarterfarmers", version:"1.21-2.2.4", category:"Utility & QoL", description:"Makes farmer villagers smarter — they harvest, replant, and store crops more efficiently.", modrinthUrl:"https://modrinth.com/mod/smarter-farmers-farmers-replant", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/smarter-farmers-farmers-replant" },
+  { name:"Smoothchunk mod", modId:"smoothchunk", version:"4.1", category:"Performance", description:"Smooths chunk loading transitions so new chunks fade in instead of popping in abruptly.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/smooth-chunk-save" },
+  { name:"Sodium", modId:"sodium", version:"0.6.13+mc1.21.1", category:"Performance", description:"Major rendering engine replacement that dramatically boosts FPS for most players.", modrinthUrl:"https://modrinth.com/mod/sodium", cfUrl:"" },
+  { name:"Sodium Dynamic Lights", modId:"sodiumdynamiclights", version:"1.0.9", category:"Performance", description:"Adds dynamic lighting to Sodium so held torches and other light sources illuminate the world around you.", modrinthUrl:"https://modrinth.com/mod/sodium-dynamic-lights", cfUrl:"" },
+  { name:"Sodium Extras", modId:"sodiumextras", version:"1.0.7", category:"Performance", description:"Extra video settings for Sodium including animations toggle, fog controls, and chunk border display.", modrinthUrl:"https://modrinth.com/mod/sodium-extras", cfUrl:"" },
+  { name:"Sodium Leaf Culling", modId:"sodiumleafculling", version:"1.0.1", category:"Performance", description:"Culls unseen leaf block faces in the render engine to improve FPS in forested areas.", modrinthUrl:"https://modrinth.com/mod/sodiumleafculling", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/sodium-leaf-culling" },
+  { name:"Sodium Options API", modId:"sodiumoptionsapi", version:"1.0.10", category:"API & Library", description:"API that lets other mods register custom options into Sodium's video settings screen.", modrinthUrl:"https://modrinth.com/mod/sodium-options-api", cfUrl:"" },
+  { name:"Some Assembly Required", modId:"someassemblyrequired", version:"5.2.8", category:"Addons", description:"Adds Create-compatible assembly and packaging machines for building multi-component items automatically.", modrinthUrl:"https://modrinth.com/mod/some-assembly-required", cfUrl:"" },
+  { name:"Structure Essentials mod", modId:"structureessentials", version:"5.0", category:"World Gen", description:"Configures which vanilla and modded structures spawn, letting you enable or disable specific structures.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/structure-essentials-forge-fabric" },
+  { name:"Supplementaries", modId:"supplementaries", version:"1.21.1-3.6.5", category:"Miscellaneous", description:"Adds functional vanilla+ blocks like ropecoils, signposts, jar blocks, hourglasses, and more.", modrinthUrl:"https://modrinth.com/mod/supplementaries", cfUrl:"" },
+  { name:"TerraBlender", modId:"terrablender", version:"4.1.0.8", category:"World Gen", description:"Library API for mods to add custom biomes into the overworld and nether without conflicts.", modrinthUrl:"https://modrinth.com/mod/terrablender", cfUrl:"" },
+  { name:"Toast Control", modId:"toastcontrol", version:"9.0.1", category:"Utility & QoL", description:"Lets you fully control which toast notifications appear on screen — hide recipe unlocks, advancements, etc.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/toast-control" },
+  { name:"Trading Post", modId:"tradingpost", version:"21.1.1", category:"Utility & QoL", description:"Adds a Trading Post block that lets you trade with all nearby villagers from a single convenient GUI.", modrinthUrl:"https://modrinth.com/mod/trading-post", cfUrl:"" },
+  { name:"TxniLib", modId:"txnilib", version:"1.0.24", category:"API & Library", description:"Library mod providing shared utilities and animation tools for Txni's mods.", modrinthUrl:"https://modrinth.com/mod/txnilib", cfUrl:"" },
+  { name:"Visual Workbench", modId:"visualworkbench", version:"21.1.1", category:"Utility & QoL", description:"Keeps items on the crafting table visually even when you close the GUI, so your work-in-progress is visible.", modrinthUrl:"https://modrinth.com/mod/visual-workbench", cfUrl:"" },
+  { name:"What Are They Up To", modId:"watut", version:"1.21.0-1.2.7", category:"Map & Information", description:"Shows what villagers and other NPCs are currently doing via a HUD indicator above their heads.", modrinthUrl:"https://modrinth.com/mod/what-are-they-up-to", cfUrl:"" },
+  { name:"Xaero's Minimap", modId:"xaerominimap", version:"25.3.13", category:"Map & Information", description:"Adds a configurable minimap in the corner of your screen with waypoints, entity radar, and cave mapping.", modrinthUrl:"https://modrinth.com/mod/xaeros-minimap", cfUrl:"" },
+  { name:"Xaero's World Map", modId:"xaeroworldmap", version:"1.40.16", category:"Map & Information", description:"Full-screen explorable world map with biome colors, waypoints, and multiplayer shared markers.", modrinthUrl:"https://modrinth.com/mod/xaeros-world-map", cfUrl:"" },
+  { name:"YUNG's API", modId:"yungsapi", version:"1.21.1-NeoForge-5.1.6", category:"API & Library", description:"Shared library used by YUNG's structure mods providing common world-gen and structure utilities.", modrinthUrl:"https://modrinth.com/mod/yungs-api", cfUrl:"" },
+  { name:"Zeta", modId:"zeta", version:"1.1-40", category:"API & Library", description:"Module framework underlying the Quark mod, also usable as a library for other modular mods.", modrinthUrl:"https://modrinth.com/mod/zeta", cfUrl:"" },
+  { name:"Aquaculture 2", modId:"aquaculture", version:"latest", category:"Addons", description:"Adds many new fish species, fishing gear, loot, and aquatic content to expand Minecraft's fishing system.", modrinthUrl:"https://modrinth.com/mod/aquaculture", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/aquaculture" },
+  { name:"Dynamic Surroundings", modId:"dsurround", version:"latest", category:"Miscellaneous", description:"Enhances the atmosphere of Minecraft with ambient sounds, visual effects, weather improvements, and environmental feedback.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/dynamic-surroundings" },
+  { name:"Bountiful", modId:"bountiful", version:"latest", category:"Adventure & RPG", description:"Adds bounty boards that generate random quests and rewards, encouraging exploration and progression.", modrinthUrl:"https://modrinth.com/mod/bountiful", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/bountiful" },
+  { name:"Simple Voice Chat", modId:"voicechat", version:"latest", category:"Server Utility", description:"Adds proximity voice chat with support for groups, microphones, and immersive communication.", modrinthUrl:"https://modrinth.com/mod/simple-voice-chat", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/simple-voice-chat" },
+  { name:"Discord Integration", modId:"dcintegration", version:"latest", category:"Utility & QoL", description:"Connects Minecraft chat and server events with Discord channels and communities.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/dcintegration" },
+  { name:"Carry On", modId:"carryon", version:"latest", category:"Utility & QoL", description:"Allows players to pick up and move blocks, chests, mobs, and other entities by hand.", modrinthUrl:"https://modrinth.com/mod/carry-on", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/carry-on" },
+  { name:"Serene Seasons", modId:"sereneseasons", version:"latest", category:"World Gen", description:"Introduces realistic seasons that affect weather, crop growth, and environmental colors.", modrinthUrl:"https://modrinth.com/mod/serene-seasons", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/serene-seasons" },
+  { name:"Thirst Was Taken", modId:"thirst", version:"latest", category:"Adventure & RPG", description:"Adds a thirst mechanic that requires players to find and manage water sources to survive.", modrinthUrl:"https://modrinth.com/mod/thirst-was-taken", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/thirst-was-taken" },
+  { name:"Alcocraft", modId:"alcocraft", version:"latest", category:"Addons", description:"Adds brewing, alcoholic beverages, and related crafting systems for roleplay and immersion.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/alcocraft" },
+  { name:"Relics", modId:"relics", version:"latest", category:"Adventure & RPG", description:"Adds powerful relics with unique abilities that can be discovered throughout the world.", modrinthUrl:"https://modrinth.com/mod/relics-mod", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/relics-mod" },
+  { name:"Bosses'Rise", modId:"bossesrise", version:"latest", category:"Adventure & RPG", description:"Adds Souls-like boss encounters with custom dungeons, unique attack patterns, dodge-roll mechanics, powerful loot, and cinematic fights across multiple biomes.", modrinthUrl:"https://modrinth.com/mod/bossesrise", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/bossesrise" },
+  { name:"Lootr", modId:"lootr", version:"latest", category:"Utility & QoL", description:"Makes loot containers instanced so every player can collect their own rewards.", modrinthUrl:"https://modrinth.com/mod/lootr", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/lootr" },
+  { name:"Enhanced Celestials", modId:"enhancedcelestials", version:"latest", category:"Miscellaneous", description:"Adds dynamic moon events such as Blood Moons that create unique challenges and gameplay changes.", modrinthUrl:"https://modrinth.com/mod/enhanced-celestials", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/enhanced-celestials" },
+  { name:"Enhanced Celestials Shader Support", modId:"enhancedcelestials_shaders", version:"latest", category:"API & Library", description:"Adds shader compatibility and visual enhancements for Enhanced Celestials moon events.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/enhanced-celestials-shader-support" },
+  { name:"Playing Cards", modId:"playingcards", version:"latest", category:"Addons", description:"Adds collectible and playable card mechanics for multiplayer entertainment and roleplay.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/playing-cards" },
+  { name:"Advancement Plaques", modId:"advancementplaques", version:"latest", category:"Utility & QoL", description:"Improves advancement notifications with customizable and visually appealing achievement popups.", modrinthUrl:"https://modrinth.com/mod/advancement-plaques", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/advancement-plaques" },
+  { name:"Create: Structures Arise", modId:"create_structures_arise", version:"latest", category:"World Gen", description:"Expands world generation with new Create-themed structures, adding variety, discovery, and more immersive exploration.", modrinthUrl:"https://modrinth.com/mod/create-structures-arise", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-structures-arise" },
+  { name:"Create: Numismatics", modId:"create_numismatics", version:"latest", category:"Addons", description:"Expands Create with a coin-based economy system for trading, automation, and progression using minted currency.", modrinthUrl:"https://modrinth.com/mod/numismatics", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/numismatics" },
+  { name:"Create: Numismatic Bounties", modId:"numismatic_bounties", version:"latest", category:"Addons", description:"Adds bounty systems integrated with Create Numismatics, letting players complete tasks for coin rewards.", modrinthUrl:"", cfUrl:"https://www.curseforge.com/minecraft/mc-mods/create-numismatic-bounties" },
+];
+
+// ============================================================
+//  DOWNLOAD PAGE WIRING
+//  Connects the three constants above to the HTML elements
+//  added in the Download Modpack page.
+//  You should not need to edit anything in this section —
+//  make changes to the constants at the top of this file.
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ── CurseForge code display ───────────────────────────────────────────
+  // Populates the code block shown in the "Official Minecraft Installation"
+  // card. The copy button in the HTML reads this element's text content.
+  const cfCodeEl = document.getElementById('cf-code');
+  if (cfCodeEl) {
+    cfCodeEl.textContent = CURSEFORGE_CODE;
+  }
+
+  // ── Manual download button (ZIP) ──────────────────────────────────────
+  // Opens MODPACK_ZIP_URL in a new tab when the user clicks the button.
+  // To change the destination, update MODPACK_ZIP_URL at the top of this file.
+  const modpackBtn = document.getElementById('downloadModpackBtn');
+  if (modpackBtn) {
+    modpackBtn.addEventListener('click', function () {
+      if (MODPACK_ZIP_URL) {
+        window.open(MODPACK_ZIP_URL, '_blank', 'noopener,noreferrer');
+      } else {
+        console.warn('[data.js] MODPACK_ZIP_URL is not set. Update the constant at the top of data.js.');
+      }
+    });
+  }
+
+  // ── NeoForge download button ──────────────────────────────────────────
+  // Opens NEOFORGE_URL in a new tab when the user clicks the button.
+  // To change the destination, update NEOFORGE_URL at the top of this file.
+  const neoforgeBtn = document.getElementById('downloadNeoForgeBtn');
+  if (neoforgeBtn) {
+    neoforgeBtn.addEventListener('click', function () {
+      if (NEOFORGE_URL) {
+        window.open(NEOFORGE_URL, '_blank', 'noopener,noreferrer');
+      } else {
+        console.warn('[data.js] NEOFORGE_URL is not set. Update the constant at the top of data.js.');
+      }
+    });
+  }
+
+});
+
+</script>
+<script>
+// ── Category metadata ─────────────────────────────────────────────────────────
+const CAT_META = {
+  "Utility & QoL":      { cls: "cat-utility",   icon: "⚙️" },
+  "Cosmetic":           { cls: "cat-cosmetic",   icon: "🎨" },
+  "API & Library":      { cls: "cat-api",        icon: "📚" },
+  "Performance":        { cls: "cat-perf",       icon: "⚡" },
+  "Miscellaneous":      { cls: "cat-misc",       icon: "🔮" },
+  "Map & Information":  { cls: "cat-map",        icon: "🗺️" },
+  "Server Utility":     { cls: "cat-server",     icon: "🖥️" },
+  "Adventure & RPG":    { cls: "cat-adventure",  icon: "⚔️" },
+  "Bug Fixes":          { cls: "cat-bugfix",     icon: "🐛" },
+  "Addons":             { cls: "cat-addon",      icon: "🔩" },
+  "World Gen":          { cls: "cat-worldgen",   icon: "🌍" },
+  "Armor, Tools & Weapons": { cls: "cat-armor",  icon: "🛡️" },
+  "Mobs":               { cls: "cat-mobs",       icon: "🐾" },
+};
+
+const CAT_ORDER = Object.keys(CAT_META);
+
+function getCatCls(cat) { return (CAT_META[cat] || { cls: "cat-misc" }).cls; }
+function getCatIcon(cat) { return (CAT_META[cat] || { icon: "🔮" }).icon; }
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── Config → DOM ──────────────────────────────────────────────────────────────
+function applyConfig() {
+  // hero badge
+  document.getElementById('hero-badge').textContent = `Minecraft ${MC_VERSION} · ${MODLOADER.split(' ')[0]} · ${PACK_VERSION.split(' ')[0]}`;
+
+  // download links — only home-download-btn is still an <a>; the others are now
+  // buttons that call showPage('download') directly via onclick.
+  ['home-download-btn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = '#'; // href kept as # — onclick handles navigation
+  });
+  ['dl-ram','dl-ram2','gs-ram'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = PACK_RAM;
+  });
+
+  // download page — NeoForge version label
+  const nfVer = document.getElementById('dl-neoforge-ver');
+  if (nfVer) nfVer.textContent = `Minecraft ${MC_VERSION}`;
+
+  // server info page
+  document.getElementById('ip-display').textContent   = SERVER_IP;
+  document.getElementById('info-port').textContent    = SERVER_PORT;
+  document.getElementById('info-mcver').textContent   = `Minecraft ${MC_VERSION}`;
+  document.getElementById('info-loader').textContent  = MODLOADER;
+  document.getElementById('info-packname').textContent= PACK_NAME;
+  document.getElementById('info-packver').textContent = PACK_VERSION;
+  document.getElementById('info-mcver2').textContent  = MC_VERSION;
+  document.getElementById('info-modcount').textContent= MODS_DATA.length;
+
+  // stats
+  document.getElementById('stat-mods').textContent   = MODS_DATA.length;
+  const addons = MODS_DATA.filter(m => m.category === 'Addons').length;
+  document.getElementById('stat-addons').textContent  = addons;
+  const cats = new Set(MODS_DATA.map(m => m.category)).size;
+  document.getElementById('stat-cats').textContent    = cats;
+}
+
+// ── Filter tabs ───────────────────────────────────────────────────────────────
+let activeFilter = 'All';
+
+function buildFilterTabs() {
+  const counts = { All: MODS_DATA.length };
+  MODS_DATA.forEach(m => {
+    counts[m.category] = (counts[m.category] || 0) + 1;
+  });
+
+  const cats = ['All', ...CAT_ORDER.filter(c => counts[c])];
+  // add any unknown categories
+  Object.keys(counts).forEach(c => { if (c !== 'All' && !cats.includes(c)) cats.push(c); });
+
+  const container = document.getElementById('filter-tabs');
+  container.innerHTML = cats.map(cat => `
+    <div class="filter-tab ${cat === activeFilter ? 'active' : ''}" onclick="setFilter('${escAttr(cat)}')">
+      ${cat === 'All' ? '' : getCatIcon(cat) + ' '}${escHtml(cat)}<span class="tab-count">${counts[cat]}</span>
+    </div>
+  `).join('');
+}
+
+function setFilter(cat) {
+  activeFilter = cat;
+  buildFilterTabs();
+  filterMods();
+}
+
+// ── Mods render ───────────────────────────────────────────────────────────────
+function renderMods(mods) {
+  const grid  = document.getElementById('mods-grid');
+  const noRes = document.getElementById('mods-no-results');
+  document.getElementById('mods-count').textContent = mods.length + ' mod' + (mods.length !== 1 ? 's' : '');
+
+  if (mods.length === 0) { grid.innerHTML = ''; noRes.classList.remove('hidden'); return; }
+  noRes.classList.add('hidden');
+
+  grid.innerHTML = mods.map((mod, i) => {
+    const catCls  = getCatCls(mod.category);
+    const catIcon = getCatIcon(mod.category);
+    return `<div class="mod-card" onclick="openModal(${i})">
+      <div class="mod-card-header">
+        <div class="mod-name">${escHtml(mod.name)}</div>
+        <span class="mod-category-badge ${catCls}">${catIcon} ${escHtml(mod.category)}</span>
+      </div>
+      <div class="mod-id">${escHtml(mod.modId)}</div>
+      <div class="mod-desc">${escHtml(mod.description || '')}</div>
+      <div class="mod-footer">
+        <span class="mod-version">v${escHtml(mod.version)}</span>
+        <div class="mod-links" onclick="event.stopPropagation()">
+          ${mod.cfUrl  ? `<a class="mod-link cf" href="${escAttr(mod.cfUrl)}"  target="_blank" rel="noopener">CF</a>` : ''}
+          ${mod.modrinthUrl ? `<a class="mod-link mr" href="${escAttr(mod.modrinthUrl)}" target="_blank" rel="noopener">MR</a>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Store filtered list for modal indexing
+let currentMods = [];
+
+function filterMods() {
+  const q = document.getElementById('mod-search').value.toLowerCase().trim();
+  let mods = MODS_DATA;
+  if (activeFilter !== 'All') mods = mods.filter(m => m.category === activeFilter);
+  if (q) mods = mods.filter(m =>
+    m.name.toLowerCase().includes(q) ||
+    m.modId.toLowerCase().includes(q) ||
+    (m.description || '').toLowerCase().includes(q)
+  );
+  currentMods = mods;
+  renderMods(mods);
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+function openModal(idx) {
+  const mod = currentMods[idx];
+  if (!mod) return;
+  const catCls  = getCatCls(mod.category);
+  const catIcon = getCatIcon(mod.category);
+
+  document.getElementById('modal-name').textContent    = mod.name;
+  document.getElementById('modal-id').textContent      = mod.modId;
+  document.getElementById('modal-version').textContent = 'v' + mod.version;
+
+  const badge = document.getElementById('modal-cat-badge');
+  badge.textContent  = catIcon + ' ' + mod.category;
+  badge.className    = 'mod-category-badge ' + catCls;
+
+  document.getElementById('modal-desc').textContent = mod.description || 'No description available.';
+
+  const links = document.getElementById('modal-links');
+  links.innerHTML = [
+    mod.modrinthUrl ? `<a class="modal-link mr" href="${escAttr(mod.modrinthUrl)}" target="_blank" rel="noopener">🌿 Modrinth</a>` : '',
+    mod.cfUrl       ? `<a class="modal-link cf" href="${escAttr(mod.cfUrl)}"        target="_blank" rel="noopener">🔥 CurseForge</a>` : '',
+  ].join('');
+
+  document.getElementById('mod-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('mod-modal')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('mod-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// ── Copy IP ───────────────────────────────────────────────────────────────────
+function copyIP() {
+  navigator.clipboard.writeText(SERVER_IP).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'COPIED!';
+    setTimeout(() => btn.textContent = 'COPY IP', 1500);
+  });
+}
+
+// ── Utils ─────────────────────────────────────────────────────────────────────
+function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escAttr(s) { return String(s||'').replace(/"/g,'&quot;'); }
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+applyConfig();
+buildFilterTabs();
+currentMods = MODS_DATA;
+renderMods(MODS_DATA);
+</script>
+</body>
+</html>
