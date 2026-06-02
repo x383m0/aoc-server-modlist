@@ -1054,15 +1054,15 @@ const MODPACK_DOWNLOAD_LABEL = "Download Modpack"; // unused — buttons have fi
 
 // EASY TO EDIT: CurseForge import code shown on the Download page.
 // Replace with the actual code generated in the CurseForge App.
-const CURSEFORGE_CODE = "REPLACE_ME";
+const CURSEFORGE_CODE = "vszYP5ro";
 
 // EASY TO EDIT: Direct URL to the modpack ZIP for manual installation.
 // Upload your ZIP somewhere (e.g. GitHub Releases, Google Drive) and paste the link here.
-const MODPACK_ZIP_URL = "REPLACE_ME";
+const MODPACK_ZIP_URL = "https://drive.google.com/drive/folders/11f9vC-3qLw8FSTWDwfwWuYgzR8fq4JC_?usp=drive_link";
 
 // EASY TO EDIT: NeoForge installer download URL.
 // Always grab the correct version from https://neoforged.net/
-const NEOFORGE_URL = "REPLACE_ME";
+const NEOFORGE_URL = "https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.232/neoforge-21.1.232-installer.jar";
 
 // ============================================================
 //  MOD LIST — add or remove mods here
@@ -1311,7 +1311,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const modpackBtn = document.getElementById('downloadModpackBtn');
   if (modpackBtn) {
     modpackBtn.addEventListener('click', function () {
-      if (MODPACK_ZIP_URL && MODPACK_ZIP_URL !== 'REPLACE_ME') {
+      if (MODPACK_ZIP_URL && MODPACK_ZIP_URL !== 'https://drive.google.com/drive/folders/11f9vC-3qLw8FSTWDwfwWuYgzR8fq4JC_?usp=drive_link') {
         window.open(MODPACK_ZIP_URL, '_blank', 'noopener,noreferrer');
       } else {
         // Placeholder behaviour: warn in console until the URL is configured.
@@ -1326,7 +1326,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const neoforgeBtn = document.getElementById('downloadNeoForgeBtn');
   if (neoforgeBtn) {
     neoforgeBtn.addEventListener('click', function () {
-      if (NEOFORGE_URL && NEOFORGE_URL !== 'REPLACE_ME') {
+      if (NEOFORGE_URL && NEOFORGE_URL !== 'https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.232/neoforge-21.1.232-installer.jar') {
         window.open(NEOFORGE_URL, '_blank', 'noopener,noreferrer');
       } else {
         // Placeholder behaviour: warn in console until the URL is configured.
