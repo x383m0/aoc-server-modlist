@@ -23,7 +23,7 @@ const CURSEFORGE_CODE = "vszYP5ro";
 
 // EASY TO EDIT: Direct URL to the modpack ZIP for manual installation.
 // Upload your ZIP somewhere (e.g. GitHub Releases, Google Drive) and paste the link here.
-const MODPACK_ZIP_URL = "REPLACE_ME";
+const MODPACK_ZIP_URL = "https://drive.google.com/drive/folders/1XlA4SRk6IMAdtfRJ2a0cmd5VDYdRThzr?usp=drive_link";
 
 // EASY TO EDIT: NeoForge installer download URL.
 // Always grab the correct version from https://neoforged.net/
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const modpackBtn = document.getElementById('downloadModpackBtn');
   if (modpackBtn) {
     modpackBtn.addEventListener('click', function () {
-      if (MODPACK_ZIP_URL && MODPACK_ZIP_URL !== 'REPLACE_ME') {
+      if (MODPACK_ZIP_URL && MODPACK_ZIP_URL !== 'https://drive.google.com/drive/folders/1XlA4SRk6IMAdtfRJ2a0cmd5VDYdRThzr?usp=drive_link') {
         window.open(MODPACK_ZIP_URL, '_blank', 'noopener,noreferrer');
       } else {
         // Placeholder behaviour: warn in console until the URL is configured.
