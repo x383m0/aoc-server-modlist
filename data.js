@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const neoforgeBtn = document.getElementById('downloadNeoForgeBtn');
   if (neoforgeBtn) {
     neoforgeBtn.addEventListener('click', function () {
-      if (NEOFORGE_URL && NEOFORGE_URL !== 'REPLACE_ME') {
+      if (NEOFORGE_URL && NEOFORGE_URL !== 'https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.232/neoforge-21.1.232-installer.jar') {
         window.open(NEOFORGE_URL, '_blank', 'noopener,noreferrer');
       } else {
         // Placeholder behaviour: warn in console until the URL is configured.
