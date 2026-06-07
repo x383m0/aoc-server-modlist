@@ -9,7 +9,7 @@ const MODLOADER = "NeoForge 21.1.232";
 const PACK_NAME = "All of Create: Aeronautics";
 const PACK_VERSION = "V1.0 (v1.8)";
 const PACK_RAM = "6GB";
-const MODPACK_DOWNLOAD_URL = "https://mega.nz/folder/1mpAhAiK#nh9EHxp8pjgaIfkyffq_eA"; // kept for reference; buttons now navigate to the Download page
+const MODPACK_DOWNLOAD_URL = "https://drive.google.com/drive/folders/11f9vC-3qLw8FSTWDwfwWuYgzR8fq4JC_?usp=sharing"; // kept for reference; buttons now navigate to the Download page
 const MODPACK_DOWNLOAD_LABEL = "Download Modpack"; // unused — buttons have fixed label now
 
 // ============================================================
