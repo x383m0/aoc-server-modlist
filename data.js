@@ -2,7 +2,7 @@
 //  EASY CONFIG — edit everything here
 // ============================================================
 
-const SERVER_IP = "PlaceHolder.net";       // ← change your server IP here
+const SERVER_IP = "create-minecraft.shulker.com";       // ← change your server IP here
 const SERVER_PORT = "25565";
 const MC_VERSION = "1.21.1";
 const MODLOADER = "NeoForge 21.1.232";
